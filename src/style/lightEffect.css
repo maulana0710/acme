@@ -1,0 +1,30 @@
+.broken-light{
+  animation-name: broken-light;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  position: relative;
+}
+@keyframes broken-light {
+  0% {
+    opacity: 0.6;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  55% {
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,42 @@
+import { useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import Footer from "./Footer";
+import ColorSchemesExample from "./NavigationBar";
+import FillExample from "./SidebarProfile";
+
+function Component({item = []}){
+    const [sidebarProfile, setSidebarProfile] = useState(false);
+    const openSidebatProfile = () => {
+      setSidebarProfile(true);
+    };
+    const closeSidebarProfile = () => {
+      setSidebarProfile(false);
+    };
+  
+    return (
+    <>
+    <Row>
+        <Col
+          sm={sidebarProfile ? 10 : 12}
+          className={sidebarProfile ? "p-0" : ""}
+        >
+          <ColorSchemesExample SidebarProfile={() => openSidebatProfile()} item={item}/>
+          </Col>
+        <Col
+          sm={sidebarProfile ? 2 : 0}
+          className={
+            sidebarProfile
+              ? "p-0"
+              : ""
+          }
+        >
+          {sidebarProfile && (
+            <FillExample SidebarProfile={() => closeSidebarProfile()} />
+          )}
+        </Col>
+        <Footer />
+      </Row>
+    </>
+    );
+}
+export default Component;

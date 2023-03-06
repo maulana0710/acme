@@ -1,0 +1,82 @@
+.fade-in {
+  animation-name: fade-in;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-iteration-count: inherit;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fade-in-down {
+  animation-name: fade-in-down;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: inherit;
+  position: relative;
+}
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    bottom: 20px;
+  }
+  100% {
+    opacity: 1;
+    bottom: 0px;
+  }
+}
+.fade-in-up {
+  animation-name: fade-in-up;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: inherit;
+  position: relative;
+}
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    top: 20px;
+  }
+  100% {
+    opacity: 1;
+    top: 0px;
+  }
+}
+.fade-out-down {
+  animation-name: fade-out-down;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: inherit;
+  position: relative;
+}
+@keyframes fade-out-down {
+  0% {
+    opacity: 1;
+    bottom: 0px;
+  }
+  100% {
+    opacity: 0;
+    bottom: 20px;
+  }
+}
+.fade-out-up {
+  animation-name: fade-in-up;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: inherit;
+  position: relative;
+}
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    top: 0px;
+  }
+  100% {
+    opacity: 0;
+    top: 20px;
+  }
+}

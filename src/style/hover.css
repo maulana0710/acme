@@ -1,0 +1,12 @@
+.bg-danger:hover{
+    opacity: 1;
+}
+.bg-success:hover{
+    opacity: 1;
+}
+.bg-danger{
+    opacity: 0.9;
+}
+.bg-success{
+    opacity: 0.9;
+}
