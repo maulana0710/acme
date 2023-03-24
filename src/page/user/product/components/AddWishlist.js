@@ -16,19 +16,19 @@ function AddWishlist({ wishlistFeature, isWishList, wishlist, allItemWishlist })
   const [add, setAdd] = React.useState(true);
   // console.log(add);
       const [wishlistUUID, setWishlistUUID] = React.useState();
-      console.log("wishlist UUID ",wishlistUUID);
+      // console.log("wishlist UUID ",wishlistUUID);
       useEffect(() => {
       const findItemWishlistUUID = allItemWishlist.filter((wishlist) => {
         if (productID?.product_uuid === wishlist?.wishlist_productUUID) {
-        console.log('1 masuk');
+        // console.log('1 masuk');
           if (userID === wishlist?.wishlist_userUUID) {
-            console.log('2 masuk lagi');
+            // console.log('2 masuk lagi');
             setWishlistUUID(wishlist?.wishlist_uuid)
           } else {
-            console.log('2 gamasuk');
+            // console.log('2 gamasuk');
           }
         } else {
-          console.log('1 gamasuk');
+          // console.log('1 gamasuk');
         }
        }
       );

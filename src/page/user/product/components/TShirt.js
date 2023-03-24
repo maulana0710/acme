@@ -11,7 +11,7 @@ import {
 import AddWishlist from "./AddWishlist";
 import ComingSoon from "./ComingSoon";
 
-function TShirt({ unique = [], wishlist = [] }) {
+function TShirt({ unique = [], wishlist = [], cart = [] }) {
   const userLogin = JSON.parse(localStorage.getItem("user"));
   const [products, setProducts] = useState([]);
 
@@ -35,7 +35,7 @@ function TShirt({ unique = [], wishlist = [] }) {
       // console.log(`unique`, unique);
 
       const itemWishlist = [];
-      console.log("product UUID wishlist", itemWishlist);
+      // console.log("product UUID wishlist", itemWishlist);
       const findWishList = productTShirt.filter((product) =>
         uniqueUser.find(
           (wish) => wish?.wishlist_productUUID === product?.product_uuid
@@ -49,7 +49,7 @@ function TShirt({ unique = [], wishlist = [] }) {
         return itemWishlist.push(value.product_uuid);
       });
 
-      console.log("wishlist UUID", itemWishlist);
+      // console.log("wishlist UUID", itemWishlist);
 
       setProducts(() => {
         const products = productTShirt.map((product) => {
@@ -81,7 +81,7 @@ function TShirt({ unique = [], wishlist = [] }) {
   // console.log(`products`, sortedDataProduct);
   // console.log(`wishlist`, wishlist);
 
-  console.log('produk kaos :', productTShirt);
+  // console.log('produk kaos :', productTShirt);
   return (
     <>
       {productTShirt.length ? (

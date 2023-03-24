@@ -12,7 +12,7 @@ import TShirt from "./components/TShirt";
 
 
 
-function AllProduct({item = [], wishlist}) {
+function AllProduct({item = [], wishlist, cart = [] }) {
   // console.log(item);
   const uniqueName = [];
   const unique = item.filter((element) => {
@@ -103,10 +103,10 @@ function AllProduct({item = [], wishlist}) {
           </div>
         </Col>
         <Col sm='10' className="h-auto align-self-center">
-            {tShirt ? <TShirt unique={unique} wishlist={wishlist}/> : ""}
-            {pants ? <Pants unique={unique} wishlist={wishlist}/> : ""}
-            {jacket ? <Jacket unique={unique} wishlist={wishlist}/> : ""}
-            {accessories ? <Accessories unique={unique} wishlist={wishlist}/> : ""}
+            {tShirt ? <TShirt unique={unique} wishlist={wishlist} cart={cart}/> : ""}
+            {pants ? <Pants unique={unique} wishlist={wishlist} cart={cart}/> : ""}
+            {jacket ? <Jacket unique={unique} wishlist={wishlist} cart={cart}/> : ""}
+            {accessories ? <Accessories unique={unique} wishlist={wishlist} cart={cart}/> : ""}
         </Col>
       </Row>
     </div>

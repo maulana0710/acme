@@ -9,9 +9,9 @@ import ProductSizeM from "./components/ProductSizeM";
 import ProductSizeL from "./components/ProductSizeL";
 import ProductSizeXL from "./components/ProductSizeXL";
 
-function DetailProduct({ item = [] }) {
+function DetailProduct({ item = [], cart = [] }) {
   const { uuidProduct } = useParams();
-  console.log("uuid product =", uuidProduct);
+  // console.log("uuid product =", uuidProduct);
   // console.log("item =", item);
 
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -39,7 +39,7 @@ function DetailProduct({ item = [] }) {
     });
 
   const [products, setProducts] = React.useState(0);
-  console.log("isi produk", products);
+  // console.log("isi produk", products);
 
   const [productSizeS, setProductSizeS] = React.useState(0);
   const [productSizeM, setProductSizeM] = React.useState(0);
@@ -91,11 +91,19 @@ function DetailProduct({ item = [] }) {
     setProductS(false);
     setProductM(false);
   };
+  // console.log("produk", productSizeS);
 
-  console.log("produk", productSizeS);
+  const [mCart, setMCart] = useState(false);
+  const openMCart = (e) => {
+    e.stopPropagation();
+    setMCart(true);
+  };
+  const closeMCart = () => {
+    setMCart(false);
+  };
   return (
     <div className="bg-dark text-light">
-      <Row>
+      <Row onClick={closeMCart}>
         <Col
           sm={sidebarProfile ? 10 : 12}
           className={sidebarProfile ? "p-0" : ""}
@@ -103,12 +111,22 @@ function DetailProduct({ item = [] }) {
           <ColorSchemesExample
             SidebarProfile={() => openSidebatProfile()}
             item={item}
+            mCart={mCart}
+            cart={cart}
+            openMCart={(e) => openMCart(e)}
+            closeMCart={() => closeMCart()}
             activeSd={true}
           />
-          <Container className="border rounded-bottom mt-2 mb-2">
+          <Container
+            className={
+              mCart || sidebarProfile
+                ? "opacity-50 border rounded-bottom mt-2 mb-2"
+                : "border rounded-bottom mt-2 mb-2"
+            }
+          >
             <Row className="mt-2 mb-2">
               <Col sm={4}>
-                <Carousel variant="dark" controls={true}>
+                <Carousel variant="dark" controls={true} >
                   <Carousel.Item>
                     <img
                       className="d-block w-100"
@@ -147,12 +165,14 @@ function DetailProduct({ item = [] }) {
                   </Carousel.Item>
                 </Carousel>
               </Col>
-              <Col sm={8} className='border-start'>
-                <h2>{products[0]?.product_name}</h2>
+              <Col sm={8} className="border-start">
+                <h2 className="fw-bolder">{products[0]?.product_name}</h2>
                 <Row className="mt-2 border-top border-light">
                   <Col>
                     <Nav.Link
-                      className={productS ? "btn active bg-light text-dark" : "btn"}
+                      className={
+                        productS ? "btn active bg-light text-dark" : "btn"
+                      }
                       id="productS"
                       onClick={() => openProductS()}
                     >
@@ -161,7 +181,9 @@ function DetailProduct({ item = [] }) {
                   </Col>
                   <Col>
                     <Nav.Link
-                      className={productM ? "btn active bg-light text-dark" : "btn"}
+                      className={
+                        productM ? "btn active bg-light text-dark" : "btn"
+                      }
                       id="productM"
                       onClick={() => openProductM()}
                     >
@@ -170,7 +192,9 @@ function DetailProduct({ item = [] }) {
                   </Col>
                   <Col>
                     <Nav.Link
-                      className={productL ? "btn active bg-light text-dark" : "btn"}
+                      className={
+                        productL ? "btn active bg-light text-dark" : "btn"
+                      }
                       id="productL"
                       onClick={() => openProductL()}
                     >
@@ -179,7 +203,9 @@ function DetailProduct({ item = [] }) {
                   </Col>
                   <Col>
                     <Nav.Link
-                      className={productXL ? "btn active bg-light text-dark" : "btn"}
+                      className={
+                        productXL ? "btn active bg-light text-dark" : "btn"
+                      }
                       id="productXL"
                       onClick={() => openProductXL()}
                     >
@@ -188,12 +214,20 @@ function DetailProduct({ item = [] }) {
                   </Col>
                 </Row>
                 <div>
-                  {productS ? <ProductSizeS product={productSizeS} /> : ""}
-                  {productM ? <ProductSizeM product={productSizeM} /> : ""}
-                  {productL ? <ProductSizeL product={productSizeL} /> : ""}
-                  {productXL ? <ProductSizeXL product={productSizeXL} /> : ""}
+                  {productS ? <ProductSizeS product={productSizeS} cart={cart}/> : ""}
+                  {productM ? <ProductSizeM product={productSizeM} cart={cart}/> : ""}
+                  {productL ? <ProductSizeL product={productSizeL} cart={cart}/> : ""}
+                  {productXL ? <ProductSizeXL product={productSizeXL} cart={cart}/> : ""}
                 </div>
               </Col>
+              <Row>
+                <Col className="fw-bold">Description</Col>
+              </Row>
+              <Row className="">
+                <Col style={{ textAlign: "justify" }}>
+                  {products[0]?.product_description}
+                </Col>
+              </Row>
             </Row>
           </Container>
         </Col>

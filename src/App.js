@@ -112,17 +112,17 @@ function App() {
   return (
     <div className="App font-source-sans-pro" style={{ overflowX: "hidden" }}>
       <Routes>
-        <Route path="/" element={<Index item={itemProducts} wishlist={wishlistProduct}/>} />
+        <Route path="/" element={<Index item={itemProducts} wishlist={wishlistProduct} cart={cartProduct}/>} />
         <Route path="/App" element={<App />} />
         <Route path="/Login" element={<BasicExample users={users} />} />
         <Route path="/Logout" element={<Logout />} />
         <Route path="/SignUp" element={<SignUp />} />
 
       {/* Product Page */}
-        <Route path="/SeriesDepression" element={<ProductSeriesDepression item={itemProducts} wishlist={wishlistProduct}/>} />
-        <Route path="/SeriesHappiness" element={<ProductSeriesHappiness item={itemProducts} wishlist={wishlistProduct}/>} />
+        <Route path="/SeriesDepression" element={<ProductSeriesDepression item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
+        <Route path="/SeriesHappiness" element={<ProductSeriesHappiness item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
         <Route path="/AllProduct" element={<AllProduct />} />
-        <Route path="/DetailProduct/:uuidProduct" element={<DetailProduct item={itemProducts} />} />
+        <Route path="/DetailProduct/:uuidProduct" element={<DetailProduct item={itemProducts} cart={cartProduct} />} />
         <Route path="/ProductSizeS/:uuidProduct" element={<ProductSizeS />} />
         <Route path="/ProductSizeM/:uuidProduct" element={<ProductSizeM />} />
         <Route path="/ProductSizeL/:uuidProduct" element={<ProductSizeL />} />
@@ -149,7 +149,7 @@ function App() {
         <Route path="/Progress" element={<Progress />} />
         <Route path="/ListTransaction" element={<ListTransaction item={itemProducts} />} />
         <Route path="/Wishlist" element={<Wishlist item={itemProducts} />} />
-        <Route path="/Cart" element={<Cart item={itemProducts} cart={cartProduct}/>} />
+        <Route path="/Cart" element={<Cart item={itemProducts} cart={cartProduct} />} />
         <Route path="/MiniCart" element={<MiniCart />} />
         <Route path="/RemoveCartItem" element={<RemoveCartItem />} />
         <Route path="/StoreItemCartUser" element={<StoreItemCartUser item={itemProducts} />} />
@@ -171,7 +171,7 @@ function App() {
   );
 }
 
-function Index({ item, wishlist }) {
+function Index({ item, wishlist, cart }) {
   const [sidebarProfile, setSidebarProfile] = useState(false);
   const openSidebarProfile = () => {
     setSidebarProfile(true);
@@ -204,6 +204,7 @@ function Index({ item, wishlist }) {
           <ColorSchemesExample
             SidebarProfile={() => openSidebarProfile()}
             item={item}
+            cart={cart}
             mCart={mCart}
             openMCart={(e) => openMCart(e)}
             closeMCart={() => closeMCart()}
@@ -232,7 +233,7 @@ function Index({ item, wishlist }) {
                   <PreviewHome item={item} />
                 </Col>
               </Row>
-              <AllProduct item={item} wishlist={wishlist}/>
+              <AllProduct item={item} wishlist={wishlist} cart={cart}/>
             </Container>
           </div>
         </Col>

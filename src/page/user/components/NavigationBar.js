@@ -12,9 +12,8 @@ import MiniCart from "./MiniCart";
 import '../../../style/fadeEffect.css';
 import AcmeO2 from "../../../img/AcmeO2.svg";
 
-function ColorSchemesExample({ SidebarProfile, item =[], activeIndex, activeSd, activeSh, openMCart, closeMCart, mCart }) {
+function ColorSchemesExample({ SidebarProfile, item = [], cart = [], activeIndex, activeSd, activeSh, openMCart, closeMCart, mCart }) {
   const userLogin = JSON.parse(localStorage.getItem("user"));
-
   return (
     <>
       <Navbar bg="light" variant="light" expand="lg" className="fs-5">
@@ -43,7 +42,7 @@ function ColorSchemesExample({ SidebarProfile, item =[], activeIndex, activeSd, 
               {localStorage.length > 0 ? (
                 <div onClick={(e) => mCart === false ? openMCart(e) : openMCart(e)}>
                   <div className="fs-4 fw-bolder">Keranjang</div>
-                  <MiniCart item={item} />
+                  <MiniCart item={item} cart={cart} user={userLogin}/>
                   <NavDropdown.Divider />
                   <div className="text-center">
                     <NavDropdown.Item

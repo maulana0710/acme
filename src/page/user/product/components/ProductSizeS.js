@@ -1,10 +1,40 @@
+import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
+import AddCart from "./AddCart";
 
-function ProductSizeS({ product = [] }) {
-  console.log("isi produk size S ", product);
+function ProductSizeS({ product = [], cart = [] }) {
+  // console.log("isi produk size S ", product);
+  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const [userID] = React.useState(userLogin?.user_uuid);
   const disc =
     (product.product_price * product.product_discountPercentage) / 100;
   const afterPrice = product.product_price - disc;
+
+  const [carts] = React.useState(cart);
+  const [productAmount, setProductAmount] = React.useState();
+  const [amount, setAmount] = React.useState(1);
+  const increase = () => {
+    if (amount === product?.product_quantityStock) {
+      setAmount(product?.product_quantityStock);
+    } else {
+      setAmount(amount + 1);
+    }
+  };
+  const decrease = () => {
+    if (amount === 1) {
+      setAmount(1);
+    } else {
+      setAmount(amount - 1);
+    }
+  };
+  React.useEffect(() => {
+    setProductAmount({ ...product, itemAmount: amount, userUUID: userID });
+  }, [amount]);
+
+  const btnFocusDisabled = {
+    outline: "none",
+    boxShadow: "none",
+  };
 
   return (
     <div>
@@ -49,54 +79,98 @@ function ProductSizeS({ product = [] }) {
           </Row>
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-4">
         {product.product_quantityStock === 0 ? (
           <>
-            <Col>
-              <Button style={{ width: "8em" }} variant="light" disabled>
-                Buy
-              </Button>
+            <Col sm={4} className="mt-3">
+              <Row className="border ms-2 me-2">
+                <Col className="d-flex align-content-center flex-wrap">
+                  {amount}
+                </Col>
+                <Col className="d-flex justify-content-around p-0">
+                  <Button
+                    className="w-100 btn"
+                    variant="dark"
+                    style={btnFocusDisabled}
+                    disabled
+                    onClick={() => decrease()}
+                  >
+                    -
+                  </Button>
+                  <Button
+                    className="w-100"
+                    variant="dark"
+                    style={btnFocusDisabled}
+                    disabled
+                    onClick={() => increase()}
+                  >
+                    +
+                  </Button>
+                </Col>
+              </Row>
             </Col>
-            <Col className="opacity-50">
+            <Col sm={8} className="mt-3">
               <Button
-                style={{ width: "8em" }}
+                style={{}}
                 variant="dark"
-                className="border"
+                className="border w-100"
                 disabled
               >
                 Add To Cart
               </Button>
             </Col>
-            <p className="text-danger">
+            <Col className="mt-3">
+              <Button style={{}} variant="light" className="w-100" disabled>
+                Buy
+              </Button>
+            </Col>
+            <p className="text-danger mt-4">
               Maaf, produk yang anda inginkan tidak tersedia
             </p>
           </>
         ) : (
           <>
-            <Col>
-              <Button style={{ width: "8em" }} variant="light">
-                Buy
-              </Button>
+            <Col sm={4} className="mt-3">
+              <Row className="border ms-2 me-2">
+                <Col className="d-flex align-content-center flex-wrap">
+                  {amount}
+                </Col>
+                <Col className="d-flex justify-content-around p-0">
+                  <Button
+                    className="w-100 btn"
+                    variant="dark"
+                    style={btnFocusDisabled}
+                    onClick={() => decrease()}
+                  >
+                    -
+                  </Button>
+                  <Button
+                    className="w-100"
+                    variant="dark"
+                    style={btnFocusDisabled}
+                    onClick={() => increase()}
+                  >
+                    +
+                  </Button>
+                </Col>
+              </Row>
             </Col>
-            <Col>
+            <Col sm={8} className="mt-3">
               <Button
-                style={{ width: "8em" }}
                 variant="dark"
-                className="border"
+                className="border w-100"
+                onClick={() => AddCart(productAmount, carts)}
               >
                 Add To Cart
               </Button>
             </Col>
+            <Col className="mt-3">
+              <Button variant="light" className="w-100">
+                Buy
+              </Button>
+            </Col>
           </>
         )}
-      </Row>
-      <Row>
-        <Col className="text-decoration-underline">Description</Col>
-      </Row>
-      <Row>
-        <Col style={{ textAlign: "justify" }}>
-          {product.product_description}
-        </Col>
       </Row>
     </div>
   );
