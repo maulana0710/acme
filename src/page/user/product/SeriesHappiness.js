@@ -13,13 +13,21 @@ import ColorSchemesExample from "../components/NavigationBar";
 import FillExample from "../components/SidebarProfile";
 import AddWishlist from "./components/AddWishlist";
 
-function ProductSeriesHappiness({ item = [], wishlist = [] }) {
+function ProductSeriesHappiness({ item = [], wishlist = [], cart = [] }) {
   const [sidebarProfile, setSidebarProfile] = useState(false);
-  const openSidebatProfile = () => {
+  const openSidebarProfile = () => {
     setSidebarProfile(true);
   };
   const closeSidebarProfile = () => {
     setSidebarProfile(false);
+  };
+  const [mCart, setMCart] = useState(false);
+  const openMCart = (e) => {
+    e.stopPropagation();
+    setMCart(true);
+  };
+  const closeMCart = () => {
+    setMCart(false);
   };
 
   var items = item.filter(function (el) {
@@ -37,7 +45,7 @@ function ProductSeriesHappiness({ item = [], wishlist = [] }) {
     }
     return false;
   });
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const userLogin = JSON.parse(sessionStorage.getItem("user"));
   const [products, setProducts] = useState([]);
 
   var user = userLogin?.user_uuid;
@@ -80,24 +88,30 @@ function ProductSeriesHappiness({ item = [], wishlist = [] }) {
         return products;
       });
     }
-  }, [unique]);
+  }, [item]);
 
   return (
-    <div className="bg-dark text-light">
-      <Row>
+    <div className={
+      sidebarProfile ? "bg-dark overflow-hidden text-light" : "bg-dark overflow-hidden text-light"}>
+      <Row onClick={closeMCart}>
         <Col
           sm={sidebarProfile ? 10 : 12}
           className={sidebarProfile ? "p-0" : ""}
         >
           <ColorSchemesExample
-            SidebarProfile={() => openSidebatProfile()}
+            SidebarProfile={() => openSidebarProfile()}
             item={item}
+            cart={cart}
+            mCart={mCart}
+            openMCart={(e) => openMCart(e)}
+            closeMCart={() => closeMCart()}
+            activeIndex={true}
             activeSh={true}
           />
           <h1>Series Happiness</h1>
           <Container>
             <Stack direction="vertical" gap={3}>
-              <div>
+              <div className={mCart || sidebarProfile ? "opacity-50" : ""}>
                 <Row className="text-dark mb-4">
                   {products.map((value, index) => {
                     return (

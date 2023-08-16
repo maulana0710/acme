@@ -12,7 +12,7 @@ import AddWishlist from "./AddWishlist";
 import ComingSoon from "./ComingSoon";
 
 function Pants({ unique = [], wishlist = [] }) {
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const userLogin = JSON.parse(sessionStorage.getItem("user"));
   const [products, setProducts] = useState([]);
 
   var productPants = unique.filter(function (el) {
@@ -35,7 +35,6 @@ function Pants({ unique = [], wishlist = [] }) {
       // console.log(`unique`, unique);
 
       const itemWishlist = [];
-      console.log("product UUID wishlist", itemWishlist);
       const findWishList = productPants.filter((product) =>
       uniqueUser.find(
           (wish) => wish?.wishlist_productUUID === product?.product_uuid
@@ -48,8 +47,6 @@ function Pants({ unique = [], wishlist = [] }) {
       findWishList.map((value) => {
         return itemWishlist.push(value.product_uuid);
       });
-
-      console.log('wishlist UUID', itemWishlist);
 
       setProducts(() => {
         const products = productPants.map((product) => {
@@ -78,7 +75,6 @@ function Pants({ unique = [], wishlist = [] }) {
 
   // console.log(`products`, sortedDataProduct);
   // console.log(`wishlist`, wishlist);
-console.log('produk celana :', productPants);
   return (
     <>
       {productPants.length ? (

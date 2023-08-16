@@ -5,10 +5,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link, useNavigate } from "react-router-dom";
 import imgLogin from "../../img/imgLogin.svg";
-import { useState } from "react";
-import { UserProvider } from "../user/Context";
+import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
 import Footer from "../user/components/Footer";
+import axios from "axios";
+import AcmeO2 from "../../img/AcmeO2.svg";
 
 // import { useAtom } from "jotai";
 // import { atomWithStore } from "jotai/zustand";
@@ -16,7 +17,7 @@ import Footer from "../user/components/Footer";
 // const store = create(() => ({ }));
 // export const stateAtom = atomWithStore(store);
 
-function BasicExample({ users }) {
+function BasicExample() {
   const [input, setInput] = useState({});
   let navigate = useNavigate();
 
@@ -29,49 +30,68 @@ function BasicExample({ users }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(input);
-    var { username, password } = document.forms[0];
-
-    const userData = users.find((data) => data.user_username === username.value);
-    if (userData) {
-      console.log("user login", userData.user_username);
-      if (userData.user_password === password.value) {
-        if (userData.user_role === "user") {
-          localStorage.setItem("user", JSON.stringify(userData));
-          // console.log("youre user")
-          navigate("/");
-        } else if (userData.user_role === "admin") {
-          localStorage.setItem("user", JSON.stringify(userData));
-          // console.log("youre admin");
-          navigate("/AdminManager");
+    // console.log(username, password);
+    // if (userData) {
+    //   console.log("user login", userData.user_username);
+    // if (userData.user_password === input.password) {
+    try {
+      const response = axios.post("http://localhost:8080/user/login", {
+        username: input.username,
+        password: input.password,
+      });
+      response.then((result) => {
+        try {
+          if (result.data.success === true) {
+            sessionStorage.setItem("user", JSON.stringify(result.data));
+            navigate("/");
+          } else {
+            console.log("salah Password");
+          }
+        } catch (error) {
+          console.log(error);
         }
-         else {
-          console.log("Login Denied")
-        }
-      } else {
-        console.log("password error");
-      }
-    } else {
-      console.log("user error");
+      });
+      // console.log(response);
+    } catch (error) {
+      console.log("login gagal", error);
+      throw error;
     }
+
+    // if (userData.user_role === "user") {
+    //   sessionStorage.setItem("user", JSON.stringify(userData));
+    //   // console.log("youre user")
+    // } else if (userData.user_role === "admin") {
+    //   sessionStorage.setItem("user", JSON.stringify(userData));
+    //   // console.log("youre admin");
+    //   navigate("/AdminManager");
+    // }
+    //  else {
+    //   console.log("Login Denied")
+    // }
+    //   } else {
+    //     console.log("password error");
+    //   }
+    // } else {
+    //   console.log("user error");
+    // }
   };
   return (
     <>
-      <UserProvider value={input}>
-        <h1 className="bg-dark">
+        <h1 className="bg-light">
           <Link style={{ textDecoration: "none", color: "#fff" }} to="/">
-            AcmeO<sup>2</sup>
+            <img style={{ width: "10%" }} src={AcmeO2} alt="AcmeO2" />
           </Link>
         </h1>
         <Container>
-          <Row className="border mt-5 bg-light">
-            <h1>Login</h1>
+          <Row className="border mt-5 bg-light text-dark">
+            <h1 className="fw-bold">LOGIN</h1>
             <Col xs={12} md={6}>
               <img className="d-block w-100" src={imgLogin} alt="login" />
             </Col>
             <Col xs={6} md={6} className=" mb-5">
               <Form className="m-2" onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Username</Form.Label>
+                <Form.Group className="mb-3 text-light" controlId="formBasicEmail">
+                  <Form.Label className="text-dark">Username</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter Username"
@@ -80,12 +100,9 @@ function BasicExample({ users }) {
                     onChange={handleChange}
                     required
                   />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
+                <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
+                  <Form.Label className="text-dark">Password</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Password"
@@ -95,24 +112,41 @@ function BasicExample({ users }) {
                     required
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                  Login
-                </Button>
+                <Row>
+                  <Col>
+                    <Button
+                      variant="success"
+                      type="submit"
+                      className="w-25 h-100"
+                    >
+                      Login
+                    </Button>
+                  </Col>
+                  <Col>
+                    <p className="d-flex justify-content-center">
+                      <Nav.Link
+                        variant="primary"
+                        className="btn btn-primary text-light w-25 h-100"
+                        href="/Signup"
+                      >
+                        Sign Up
+                      </Nav.Link>
+                    </p>
+                  </Col>
+                </Row>
                 <p className="d-flex justify-content-center">
-                  Not a member?
                   <Nav.Link
                     variant="primary"
-                    className="text-primary text-decoration-underline"
-                    href="/Signup"
+                    className="text-dark text-decoration-underline"
+                    href="/ForgotPassword"
                   >
-                    Sign Up
+                    Forgot Password?
                   </Nav.Link>
                 </p>
               </Form>
             </Col>
           </Row>
         </Container>
-      </UserProvider>
       <Footer />
     </>
   );

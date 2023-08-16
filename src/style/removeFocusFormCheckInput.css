@@ -1,0 +1,4 @@
+.form-check-input-remove-focus:focus {
+    box-shadow: none;
+    display: block;
+}

@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 
 function Footer() {
   return (
-    <Container>
+    <Container fluid>
       <Card className="text-dark">
         <Card.Body>
           <blockquote className="blockquote mb-0">

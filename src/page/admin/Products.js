@@ -1,21 +1,22 @@
 import { Button, Carousel, Col, Container, Row } from "react-bootstrap";
 
 function Products({ item }) {
-  const sortedData = item.map(item => {
-    return {
-      ...item,
-      sortableDate: new Date(item.create_at).getTime()
-    };
-  }).sort((a, b) => {
-    return a.sortableDate - b.sortableDate;
-  });
+  const sortedData = item
+    .map((item) => {
+      return {
+        ...item,
+        sortableDate: new Date(item.create_at).getTime(),
+      };
+    })
+    .sort((a, b) => {
+      return a.sortableDate - b.sortableDate;
+    });
   // console.log(sortedData);
 
   return (
     <div className="text-dark overflow-hidden">
       <Row>
         <Col>
-          <h2>Products</h2>
           <Container>
             {sortedData.map((value, index) => {
               const disc =
@@ -75,7 +76,15 @@ function Products({ item }) {
                         className="rounded w-100"
                         style={{ backgroundColor: "#474E68" }}
                       >
-                        <Col>Storage Stock: {value.product_quantityStock}</Col>
+                        {value.product_quantityStock === 0 ? (
+                          <Col className="bg-danger">
+                            Storage Stock: {value.product_quantityStock}
+                          </Col>
+                        ) : (
+                          <Col>
+                            Storage Stock: {value.product_quantityStock}
+                          </Col>
+                        )}
                         <Col style={{ backgroundColor: "#404258" }}>
                           Category: {value.product_category}
                         </Col>
@@ -140,7 +149,7 @@ function Products({ item }) {
                       variant="success"
                       href={`UpdateProduct/${value.product_uuid}`}
                     >
-                      Update Product
+                      Perbarui Produk
                     </Button>
                   </Row>
                 </div>

@@ -1,18 +1,11 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
+import jwt_decode from "jwt-decode";
 
-function AddWishlist({ wishlistFeature, isWishList, wishlist, allItemWishlist }) {
+function AddWishlist({ wishlistFeature, isWishList, wishlist, allItemWishlist, userID }) {
   // console.log('status', wishlistUUID);
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const [userID] = React.useState(userLogin?.user_uuid);
   const [productID] = React.useState(wishlistFeature);
-  // const [wishlistID, setWishlistID] = React.useState();
-  // const wislist = wishlist.map((value) => {return console.log(value);})
-  // if (userID === wishlist.wishlist_userId) {
-  //   console.log('ada');
-  // }
-  // console.log(productID?.product_uuid);
   const [add, setAdd] = React.useState(true);
   // console.log(add);
       const [wishlistUUID, setWishlistUUID] = React.useState();

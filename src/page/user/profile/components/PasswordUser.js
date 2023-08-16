@@ -1,7 +1,7 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
 
 function PasswordUser({PasswordUser}) {
-  // const userLogin = JSON.parse(localStorage.getItem("user"));
+  // const userLogin = JSON.parse(sessionStorage.getItem("user"));
   return (
     <>
       <h1>Password</h1>
