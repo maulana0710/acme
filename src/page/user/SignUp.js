@@ -8,6 +8,8 @@ import imgLogin from "../../img/imgLogin.svg";
 import { useState } from "react";
 import { UserProvider } from "./Context";
 import Footer from "./components/Footer";
+import axios from "axios";
+import AcmeO2 from "../../img/AcmeO2.svg";
 
 // import { useAtom } from "jotai";
 // import { atomWithStore } from "jotai/zustand";
@@ -15,8 +17,10 @@ import Footer from "./components/Footer";
 // const store = create(() => ({ }));
 // export const stateAtom = atomWithStore(store);
 
-function SignUp({ users }) {
+function SignUp() {
   const [input, setInput] = useState({});
+  const [userUsed, setUserUsed] = useState(true);
+  console.log(userUsed);
   let navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -28,40 +32,60 @@ function SignUp({ users }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(input);
-    var { username, password } = document.forms[0];
-
-    const userData = users.find((user) => user.username === username.value);
-    if (userData) {
-      console.log("user login", userData.username, userData.lastName);
-      if (userData.password === password.value) {
-        localStorage.setItem("user", JSON.stringify(userData));
-        navigate("/");
-      } else {
-        console.log("password error");
-      }
-    } else {
-      console.log("user error");
+    try {
+      const response = axios.post("http://localhost:8080/user/add", {
+        username: input.username,
+        password: input.password,
+        role: "user",
+        phoneNumber: input.phoneNumber,
+        address: "",
+        postalCode: "",
+      });
+      // console.log(response);
+      response.then((result) => {
+        try {
+          if (result.data.success === false) {
+            console.log("Username Telah Digunakan");
+            setUserUsed(false);
+          } else {
+            setUserUsed(true);
+            console.log("username dapat digunakan");
+            navigate("/Login");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    } catch (error) {
+      console.log("gagal mendaftar", error);
+      throw error;
     }
   };
 
   return (
     <>
       <UserProvider value={input}>
-        <h1 className="bg-dark">
+        <h1 className="bg-light">
           <Link style={{ textDecoration: "none", color: "#fff" }} to="/">
-            AcmeO<sup>2</sup>
+            <img style={{ width: "10%" }} src={AcmeO2} alt="AcmeO2" />
           </Link>
         </h1>
         <Container>
-          <Row className="border mt-5 bg-light">
-            <h1>SIGN UP</h1>
+          <Row className="border mt-5 bg-light text-dark">
+            <h1 className="fw-bold">SIGN UP</h1>
             <Col xs={12} md={6}>
               <img className="d-block w-100" src={imgLogin} alt="login" />
             </Col>
             <Col xs={6} md={6} className=" mb-5">
               <Form className="m-2" onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicUsername">
-                  <Form.Label>Username</Form.Label>
+                  {userUsed ? (
+                    <Form.Label>Username</Form.Label>
+                  ) : (
+                    <Form.Label className="text-danger">
+                      Username Telah Digunakan
+                    </Form.Label>
+                  )}
                   <Form.Control
                     type="text"
                     placeholder="Enter Username"
@@ -70,20 +94,6 @@ function SignUp({ users }) {
                     onChange={handleChange}
                     required
                   />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicUsername">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Email"
-                    name="email"
-                    value={input.email || ""}
-                    onChange={handleChange}
-                    required
-                  />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
@@ -96,7 +106,7 @@ function SignUp({ users }) {
                     required
                   />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicUsername">
+                <Form.Group className="mb-3" controlId="formBasicPhoneNumber">
                   <Form.Label>Phone Number</Form.Label>
                   <Form.Control
                     type="text"
@@ -106,11 +116,9 @@ function SignUp({ users }) {
                     onChange={handleChange}
                     required
                   />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
+                  <Form.Text className="text-muted"></Form.Text>
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="success" type="submit">
                   Sign Up
                 </Button>
               </Form>

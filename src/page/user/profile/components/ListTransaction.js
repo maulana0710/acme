@@ -4,7 +4,7 @@ function ListTransaction({ item = [] }) {
     <div className="text-dark overflow-hidden">
       <Row>
         <Col>
-          <h2>My Order</h2>
+          <h2>Pesanan Saya</h2>
           <Container>
             {item.map((value, index) => {
               return (
@@ -34,11 +34,11 @@ function ListTransaction({ item = [] }) {
                   </Row>
                   <Row>
                     <Col>Product User Buy</Col>
-                    <Col>Total Payment: ${value.product_price}</Col>
+                    <Col>Total Payment: Rp.{value.product_price}.00</Col>
                   </Row>
                   <Row className="justify-content-center">
                     <Button className="w-25 mb-2 mt-2" variant="primary">
-                      Detail Product
+                      Detail Pesanan
                     </Button>
                   </Row>
                 </div>

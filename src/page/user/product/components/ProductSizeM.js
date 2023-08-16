@@ -1,17 +1,22 @@
 import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import AddCart from "./AddCart";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function ProductSizeM({ product = [], cart = [] }) {
+function ProductSizeM({ product = [], cart = [], userLogin = [] }) {
   // console.log("isi produk size M ", product);
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const [userID] = React.useState(userLogin?.user_uuid);
+  let navigate = useNavigate();
+  
+  console.log('userID', userLogin?.user_uuid);
   const disc =
     (product.product_price * product.product_discountPercentage) / 100;
   const afterPrice = product.product_price - disc;
-  
+
   const [carts] = React.useState(cart);
   const [productAmount, setProductAmount] = React.useState();
+  console.log("carts", carts);
+  console.log("productAmount", productAmount);
   const [amount, setAmount] = React.useState(1);
   const increase = () => {
     if (amount === product?.product_quantityStock) {
@@ -28,22 +33,47 @@ function ProductSizeM({ product = [], cart = [] }) {
     }
   };
   React.useEffect(() => {
-    setProductAmount({...product, itemAmount: amount, userUUID: userID})
-  }, [amount])
+    setProductAmount({ ...product, itemAmount: amount, userUUID: userLogin?.user_uuid });
+  }, [amount]);
 
   const btnFocusDisabled = {
     outline: "none",
     boxShadow: "none",
   };
+  
+  const buy = () => {
+    // console.log("user ID :", userLogin?.user_uuid);
+    // console.log("produk ID :", product?.product_uuid);
+    // console.log("jumlah :", amount);
+    try {
+      axios.post("http://localhost:8080/cart/add", {
+        userUUID: userLogin?.user_uuid,
+        productUUID: product?.product_uuid,
+        cartValue: amount,
+      });
+    navigate("/PurchaseConfirmation");
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <Row className="border-bottom">
         <Col className="border-end">
-          <Row>
-            <Col>stock</Col>
-            <Col>:</Col>
-            <Col>{product?.product_quantityStock}</Col>
-          </Row>
+          {product.product_quantityStock === 0 ? (
+            <Row className="bg-danger">
+              <Col>stock</Col>
+              <Col>:</Col>
+              <Col>{product?.product_quantityStock}</Col>
+            </Row>
+          ) : (
+            <Row>
+              <Col>stock</Col>
+              <Col>:</Col>
+              <Col>{product?.product_quantityStock}</Col>
+            </Row>
+          )}
         </Col>
         <Col>
           <Row>
@@ -81,7 +111,7 @@ function ProductSizeM({ product = [], cart = [] }) {
       <Row className="mt-4">
         {product.product_quantityStock === 0 ? (
           <>
-            <Col sm={4} className='mt-3'>
+            <Col sm={4} className="mt-3">
               <Row className="border ms-2 me-2">
                 <Col className="d-flex align-content-center flex-wrap">
                   {amount}
@@ -108,19 +138,19 @@ function ProductSizeM({ product = [], cart = [] }) {
                 </Col>
               </Row>
             </Col>
-            <Col sm={8} className='mt-3'>
+            <Col sm={8} className="mt-3">
               <Button
                 style={{}}
                 variant="dark"
                 className="border w-100"
                 disabled
               >
-                Add To Cart
+                Tambah Ke Keranjang
               </Button>
             </Col>
             <Col className="mt-3">
               <Button style={{}} variant="light" className="w-100" disabled>
-                Buy
+                Beli
               </Button>
             </Col>
             <p className="text-danger mt-4">
@@ -129,7 +159,7 @@ function ProductSizeM({ product = [], cart = [] }) {
           </>
         ) : (
           <>
-            <Col sm={4} className='mt-3'>
+            <Col sm={4} className="mt-3">
               <Row className="border ms-2 me-2">
                 <Col className="d-flex align-content-center flex-wrap">
                   {amount}
@@ -154,18 +184,18 @@ function ProductSizeM({ product = [], cart = [] }) {
                 </Col>
               </Row>
             </Col>
-            <Col sm={8} className='mt-3'>
+            <Col sm={8} className="mt-3">
               <Button
                 variant="dark"
                 className="border w-100"
                 onClick={() => AddCart(productAmount, carts)}
               >
-                Add To Cart
+                Tambah Ke Keranjang
               </Button>
             </Col>
             <Col className="mt-3">
-              <Button variant="light" className="w-100">
-                Buy
+              <Button variant="light" className="w-100" onClick={() => buy()}>
+                Beli
               </Button>
             </Col>
           </>

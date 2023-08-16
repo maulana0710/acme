@@ -8,11 +8,26 @@ import ProductSizeS from "./components/ProductSizeS";
 import ProductSizeM from "./components/ProductSizeM";
 import ProductSizeL from "./components/ProductSizeL";
 import ProductSizeXL from "./components/ProductSizeXL";
+import jwt_decode from "jwt-decode";
 
 function DetailProduct({ item = [], cart = [] }) {
   const { uuidProduct } = useParams();
   // console.log("uuid product =", uuidProduct);
   // console.log("item =", item);
+
+  const sessionData = sessionStorage.getItem("user");
+  const [userLogin, setUserLogin] = React.useState();
+  React.useEffect(() => {
+    if (sessionData === null) {
+      // console.log(sessionData);
+    }else{
+      const parseData = JSON.parse(sessionData);
+      var decoded = jwt_decode(parseData?.token);
+      // console.log(userLogin);
+      setUserLogin(decoded?.results[0]);
+      
+    }
+  }, [sessionData])
 
   const [sidebarProfile, setSidebarProfile] = useState(false);
   const openSidebatProfile = () => {
@@ -214,10 +229,10 @@ function DetailProduct({ item = [], cart = [] }) {
                   </Col>
                 </Row>
                 <div>
-                  {productS ? <ProductSizeS product={productSizeS} cart={cart}/> : ""}
-                  {productM ? <ProductSizeM product={productSizeM} cart={cart}/> : ""}
-                  {productL ? <ProductSizeL product={productSizeL} cart={cart}/> : ""}
-                  {productXL ? <ProductSizeXL product={productSizeXL} cart={cart}/> : ""}
+                  {productS ? <ProductSizeS product={productSizeS} cart={cart} userLogin={userLogin}/> : ""}
+                  {productM ? <ProductSizeM product={productSizeM} cart={cart} userLogin={userLogin}/> : ""}
+                  {productL ? <ProductSizeL product={productSizeL} cart={cart} userLogin={userLogin}/> : ""}
+                  {productXL ? <ProductSizeXL product={productSizeXL} cart={cart} userLogin={userLogin}/> : ""}
                 </div>
               </Col>
               <Row>

@@ -6,15 +6,27 @@ import "../../style/hover.css";
 import React, { useState } from "react";
 import { stateAtom } from "./StoreItemCartUser";
 import FillExample from "./components/SidebarProfile";
+import AddCart from "./product/components/AddCart";
+import jwt_decode from "jwt-decode";
 
 function Cart({ item = [], cart = [] }) {
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const sessionData = sessionStorage.getItem("user");
+  const [userLogin, setUserLogin] = React.useState();
+  React.useEffect(() => {
+    if (sessionData === null) {
+      // console.log(sessionData);
+    } else {
+      const parseData = JSON.parse(sessionData);
+      var decoded = jwt_decode(parseData?.token);
+      // console.log(userLogin);
+      setUserLogin(decoded?.results[0]);
+    }
+  }, [sessionData]);
   // console.log("barang =", item);
   // console.log("keranjang =", cart);
   const productsFilter = [];
-  const [user] = React.useState(userLogin);
 
-  var userUUID = user?.user_uuid;
+  var userUUID = userLogin?.user_uuid;
   const cartUserAfterFilter = [];
   const uniqueUser = cart.filter((element) => {
     if (element.cart_userUUID === userUUID) {
@@ -65,26 +77,25 @@ function Cart({ item = [], cart = [] }) {
     setMCart(false);
   };
 
-  const [state, setState] = useAtom(stateAtom);
+  // const [state, setState] = useAtom(stateAtom);
   // console.log("item =", state);
 
-  const [productAmount, setProductAmount] = React.useState();
-  const [amount, setAmount] = React.useState(1);
-  const increase = () => {
-    if (amount === productsFilter?.product_quantityStock) {
-      setAmount(productsFilter?.product_quantityStock);
-    } else {
-      setAmount(amount + 1);
-    }
-  };
-  const decrease = () => {
-    if (amount === 1) {
-      setAmount(1);
-    } else {
-      setAmount(amount - 1);
-    }
-  };
-
+  // const [productAmount, setProductAmount] = React.useState();
+  // const [amount, setAmount] = React.useState(1);
+  // const increase = () => {
+  //   if (amount === productsFilter?.product_quantityStock) {
+  //     setAmount(productsFilter?.product_quantityStock);
+  //   } else {
+  //     setAmount(amount + 1);
+  //   }
+  // };
+  // const decrease = () => {
+  //   if (amount === 1) {
+  //     setAmount(1);
+  //   } else {
+  //     setAmount(amount - 1);
+  //   }
+  // };
   return (
     <div
       className={
@@ -107,137 +118,147 @@ function Cart({ item = [], cart = [] }) {
             closeMCart={() => closeMCart()}
             activeIndex={true}
           />
-          <h1>Keranjang</h1>
+          <h1 className="fw-bold">KERANJANG</h1>
           <Container
             className={mCart || sidebarProfile ? "opacity-50 mt-2" : "mt-2"}
           >
-            <div>
-              {productsFilter.map((value, index) => {
-                const disc =
-                  (value.product_price * value.product_discountPercentage) /
-                  100;
-                const afterPrice = value.product_price - disc;
-                const size = value.product_sku
-                  .slice(-2)
-                  .replaceAll(/[0-9]/g, "");
-                return (
-                  <Row className="mt-4 mb-4 bg-light text-dark border rounded">
-                    <Col sm={2}>
-                      <Carousel variant="dark" controls={true}>
-                        <Carousel.Item>
-                          <img
-                            className="d-block w-100"
-                            style={
-                              value?.product_imageUrl1 === "undefined"
-                                ? { height: "22rem" }
-                                : {}
-                            }
-                            src={value?.product_imageUrl1}
-                            alt="First slide"
-                          />
-                        </Carousel.Item>
-                        <Carousel.Item>
-                          <img
-                            className="d-block w-100"
-                            style={
-                              value?.product_imageUrl2 === "undefined"
-                                ? { height: "22rem" }
-                                : {}
-                            }
-                            src={value?.product_imageUrl2}
-                            alt="Second slide"
-                          />
-                        </Carousel.Item>
-                        <Carousel.Item>
-                          <img
-                            className="d-block w-100"
-                            style={
-                              value?.product_imageUrl3 === "undefined"
-                                ? { height: "22rem" }
-                                : {}
-                            }
-                            src={value?.product_imageUrl3}
-                            alt="Third slide"
-                          />
-                        </Carousel.Item>
-                      </Carousel>
-                    </Col>
-                    <Col sm={10} className="border-start">
-                      <Row className="border-bottom">
-                        <Col className="border-end">
-                          <h1 className="fw-bolder">{value?.product_name}</h1>
-                        </Col>
-                      </Row>
-                      <Row className="border-bottom">
-                        <Col className="border-end">
-                          <Row>
-                            <Col>stock</Col>
-                            <Col>:</Col>
-                            <Col>{value?.product_quantityStock}</Col>
-                          </Row>
-                        </Col>
-                        <Col>
-                          <Row>
-                            <Col>Category</Col>
-                            <Col>:</Col>
-                            <Col>{value?.product_category}</Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                      <Row className="mt-4">
-                        <Col className="border-end">
-                          <Row className="fs-3 justify-content-start ms-2">
-                            {value.product_discountPercentage > 0 ? (
-                              <>
-                                <Col
-                                  sm="auto"
-                                  className="text-warning border rounded-start bg-danger"
-                                  style={{ width: "max-content" }}
-                                >
-                                  {value.product_discountPercentage}%
-                                </Col>
-                                <Col sm="auto">
-                                  <del className="text-danger">
-                                    Rp.{value.product_price.toFixed(2)}
-                                  </del>
-                                </Col>
-                              </>
-                            ) : (
-                              ""
-                            )}{" "}
-                            <Col sm="auto">Rp.{afterPrice.toFixed(2)}</Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                      <Row className="mt-4">
-                        <>
-                          <Col sm='auto' className="mt-3">
-                            <Button
-                              variant="success"
-                              className="border w-100"
-                              onClick={() =>
-                                increase(productAmount, cartUserAfterFilter)
+            <Row>
+              <Col>
+                {productsFilter.map((value, index) => {
+                  const disc =
+                    (value?.product_price * value?.product_discountPercentage) /
+                    100;
+                  const afterPrice = value?.product_price - disc;
+                  const size = value?.product_sku
+                    .slice(-2)
+                    .replaceAll(/[0-9]/g, "");
+                  return (
+                    <Row className="mt-4 mb-4 bg-light text-dark border rounded">
+                      <Col sm={2}>
+                        <Carousel variant="dark" controls={false}>
+                          <Carousel.Item>
+                            <img
+                              className="d-block w-100"
+                              style={
+                                value?.product_imageUrl1 === "undefined"
+                                  ? { height: "22rem" }
+                                  : {}
                               }
-                            >
-                              +
-                            </Button>
+                              src={value?.product_imageUrl1}
+                              alt="First slide"
+                            />
+                          </Carousel.Item>
+                          <Carousel.Item>
+                            <img
+                              className="d-block w-100"
+                              style={
+                                value?.product_imageUrl2 === "undefined"
+                                  ? { height: "22rem" }
+                                  : {}
+                              }
+                              src={value?.product_imageUrl2}
+                              alt="Second slide"
+                            />
+                          </Carousel.Item>
+                          <Carousel.Item>
+                            <img
+                              className="d-block w-100"
+                              style={
+                                value?.product_imageUrl3 === "undefined"
+                                  ? { height: "22rem" }
+                                  : {}
+                              }
+                              src={value?.product_imageUrl3}
+                              alt="Third slide"
+                            />
+                          </Carousel.Item>
+                        </Carousel>
+                      </Col>
+                      <Col sm={10} className="border-start">
+                        <Row className="border-bottom">
+                          <Col className="border-end">
+                            <h1 className="fw-bolder">{value?.product_name}</h1>
+                          </Col>
+                        </Row>
+                        <Row className="border-bottom">
+                          <Col className="border-end">
+                            <Row>
+                              <Col>Jumlah Produk dalam Keranjang</Col>
+                              <Col>:</Col>
+                              <Col>{value?.cartValue}</Col>
+                            </Row>
+                          </Col>
+                          <Col>
+                            <Row>
+                              <Col>Category</Col>
+                              <Col>:</Col>
+                              <Col>{value?.product_category}</Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col className="border-end">
+                            <Row className="fs-3 justify-content-start ms-2">
+                              {value.product_discountPercentage > 0 ? (
+                                <>
+                                  <Col
+                                    sm="auto"
+                                    className="text-warning border rounded-start bg-danger"
+                                    style={{ width: "max-content" }}
+                                  >
+                                    {value.product_discountPercentage}%
+                                  </Col>
+                                  <Col sm="auto">
+                                    <del className="text-danger">
+                                      Rp.{value.product_price.toFixed(2)}
+                                    </del>
+                                  </Col>
+                                </>
+                              ) : (
+                                ""
+                              )}{" "}
+                              <Col sm="auto">Rp.{afterPrice.toFixed(2)}</Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col sm="2" className="mt-3">
                             <Button
                               variant="danger"
-                              className="border w-100"
-                              onClick={() =>
-                                decrease(productAmount, cartUserAfterFilter)
-                              }
+                              className="border"
+                              onClick={() => (
+                                value.cartvalue, cartUserAfterFilter
+                              )}
                             >
                               -
                             </Button>
                           </Col>
-                        </>
-                      </Row>
-                    </Col>
-                  </Row>
-                );
-              })}
-            </div>
+                          <Col sm="2" className="mt-3">
+                            <Button
+                              variant="success"
+                              className="border"
+                              onClick={() =>
+                                AddCart(value.cartvalue, cartUserAfterFilter)
+                              }
+                            >
+                              +
+                            </Button>
+                          </Col>
+                          <Col sm="8" className="mt-3"></Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  );
+                })}
+                <Button
+                  variant="primary"
+                  className="border w-25"
+                  href="/PurchaseConfirmation"
+                >
+                  Beli
+                </Button>
+              </Col>
+            </Row>
           </Container>
         </Col>
         <Col

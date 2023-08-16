@@ -1,11 +1,13 @@
 import axios from "axios";
 
-function AddCart(item, cart) {
-  
-    const temp = [...cart] // cart list array punya lu
-    const existingProduct = temp.find(cart => cart?.cart_productUUID === item?.product_uuid) // check kalo uuid product di cart sama
+function AddCart(item = [] , carts = []) {
+  // console.log("carts", carts);
+  // console.log("ITEM", item);
+    const temp = [...carts] // cart list array
+    const existingProduct = temp.find(carts => carts?.cart_productUUID === item?.product_uuid) // check kalo uuid product di cart sama
     const valueCart = (existingProduct?.cart_cartValue + item?.itemAmount)
-    console.log(valueCart);
+    // console.log('valueCart', valueCart);
+    // console.log('existingProduct', existingProduct);
     if (existingProduct) {
       // console.log('update', existingProduct);
       try {
@@ -20,7 +22,8 @@ function AddCart(item, cart) {
         }
 
     } else {
-      // console.log('baru', cart);
+      // console.log('baru', carts);
+      // console.log('user id', item?.userUUID);
       try {
           axios.post("http://localhost:8080/cart/add", {
             userUUID: item?.userUUID,

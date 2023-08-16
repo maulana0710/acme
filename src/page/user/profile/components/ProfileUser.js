@@ -1,7 +1,11 @@
 import { Button, Col, Form, Row } from "react-bootstrap";
+import jwt_decode from 'jwt-decode';
 
 function ProfileUser({ProfileUser}) {
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const sessionData = sessionStorage.getItem('user');
+  const parseData = JSON.parse(sessionData);
+  var decoded = jwt_decode(parseData?.token);
+  const userLogin = decoded?.results[0]
   return (
     <>
       <h1>Profile</h1>

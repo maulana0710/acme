@@ -1,145 +1,88 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Button, Carousel, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import AcmeO2 from "../../img/AcmeO2.svg";
-import axios from "axios";
+function AddProduct() {
 
-function UpdateProduct({ item }) {
-  const { uuid } = useParams();
-  // console.log(uuid);
-  const [items, setItems] = useState();
-  // console.log(items);
-  React.useEffect(() => {
-    getItem();
-  }, [item]);
-  const getItem = () => {
-    var uuidUpdateProduct = item.find(function (el) {
-      return el.product_uuid === uuid;
-    });
-    setItems(uuidUpdateProduct);
-    // console.log(uuidUpdateProduct);
-  };
-
-  const [input, setInput] = useState({});
-  const [inputFile1, setInputFile1] = useState("");
-  const [inputFile2, setInputFile2] = useState("");
-  const [inputFile3, setInputFile3] = useState("");
-
-  const handleFileChange1 = (event) => {
-    setInputFile1(event.target.files[0]);
-  };
-  const handleFileChange2 = (event) => {
-    setInputFile2(event.target.files[0]);
-  };
-  const handleFileChange3 = (event) => {
-    setInputFile3(event.target.files[0]);
-  };
-  let navigate = useNavigate();
-  // console.log(input?.category);
-  // console.log(input?.series);
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInput((values) => ({ ...values, [name]: value }));
-  };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(input);
-    console.log("file1 :", inputFile1);
-    console.log("file2 :", inputFile2);
-    console.log("file3 :", inputFile3);
-    try {
-      const formData = new FormData();
-      formData.append("name", input.name || items?.product_name);
-      formData.append("category", input.category || items?.product_category);
-      formData.append("series", input.series || items?.product_series);
-      formData.append("price", input.price || items?.product_price);
-      formData.append(
-        "discountPercentage",
-        input.discountPercentage || items?.product_discountPercentage
-      );
-      formData.append("sku", input.sku || items?.product_sku);
-      formData.append(
-        "quantityStock",
-        input.quantityStock || items?.product_quantityStock
-      );
-      formData.append(
-        "description",
-        input.description || items?.product_description
-      );
-      formData.append("file1", inputFile1);
-      formData.append("file2", inputFile2);
-      formData.append("file3", inputFile3);
-
-      const response = await axios.post(
-        `http://localhost:8080/product/edit/${items?.product_uuid}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+  
+    const [input, setInput] = useState({});
+    const [inputFile1, setInputFile1] = useState("");
+    const [inputFile2, setInputFile2] = useState("");
+    const [inputFile3, setInputFile3] = useState("");
+  
+    const handleFileChange1 = (event) => {
+      setInputFile1(event.target.files[0]);
+    };
+    const handleFileChange2 = (event) => {
+      setInputFile2(event.target.files[0]);
+    };
+    const handleFileChange3 = (event) => {
+      setInputFile3(event.target.files[0]);
+    };
+    let navigate = useNavigate();
+    // console.log(input?.category);
+    // console.log(input?.series);
+    const handleChange = (event) => {
+      const name = event.target.name;
+      const value = event.target.value;
+      setInput((values) => ({ ...values, [name]: value }));
+    };
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      console.log(input);
+      console.log("file1 :", inputFile1);
+      console.log("file2 :", inputFile2);
+      console.log("file3 :", inputFile3);
+      try {
+        const formData = new FormData();
+        formData.append("name", input.name );
+        formData.append("category", input.category );
+        formData.append("series", input.series );
+        formData.append("price", input.price );
+        formData.append(
+          "discountPercentage",
+          input.discountPercentage 
+        );
+        formData.append("sku", input.sku );
+        formData.append(
+          "quantityStock",
+          input.quantityStock 
+        );
+        formData.append(
+          "description",
+          input.description 
+        );
+        formData.append("file1", inputFile1);
+        formData.append("file2", inputFile2);
+        formData.append("file3", inputFile3);
+  
+        const response = await axios.post(
+          `http://localhost:8080/product/add`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        console.log(response.data.success);
+        if (response.data.success === true) {
+          navigate(`/AdminManager`, { state: { addhProductTrue: true } });
         }
-      );
-
-      console.log(response.data.success);
-      if (response.data.success === true) {
-        navigate(`/AdminManager`, { state: { updateProductTrue: true } });
+      } catch (error) {
+        console.log("gagal memperbarui", error);
+        throw error;
       }
-    } catch (error) {
-      console.log("gagal memperbarui", error);
-      throw error;
-    }
-  };
-
-  return (
-    <>
-      <Link style={{ textDecoration: "none", color: "#fff" }} to="/">
-        <img style={{ width: "10%" }} src={AcmeO2} alt="AcmeO2" />
-      </Link>
-      <Container>
+    };
+    return (
+        <>
         <Row className="border mt-5 bg-light justify-content-center">
-          <h1>Update Product</h1>
-          <Col sm="3" className="border" style={{ height: "20rem" }}>
-            <Carousel variant="dark" className="m-1">
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  style={
-                    items?.product_imageUrl1 === "undefined"
-                      ? { height: "22rem" }
-                      : {}
-                  }
-                  src={items?.product_imageUrl1}
-                  alt="First slide"
-                />
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  style={
-                    items?.product_imageUrl2 === "undefined"
-                      ? { height: "22rem" }
-                      : {}
-                  }
-                  src={items?.product_imageUrl2}
-                  alt="Second slide"
-                />
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block w-100"
-                  style={
-                    items?.product_imageUrl3 === "undefined"
-                      ? { height: "22rem" }
-                      : {}
-                  }
-                  src={items?.product_imageUrl3}
-                  alt="Third slide"
-                />
-              </Carousel.Item>
-            </Carousel>
+        <h1>Tambah Produk</h1>
+          <Col sm="2">
+            
           </Col>
-          <Col sm="8" className=" mb-5">
+          <Col sm="8" className="mb-5">
             <Form className="m-2" onSubmit={handleSubmit}>
               <Form.Group as={Row} className="mb-3" controlId="formBasicName">
                 <Form.Label column sm="2">
@@ -149,8 +92,8 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="name"
-                    value={input.name || items?.product_name}
-                    placeholder={items?.product_name}
+                    value={input.name || ''}
+                    placeholder={'Masukan nama produk'}
                     onChange={handleChange}
                   />
                 </Col>
@@ -177,13 +120,6 @@ function UpdateProduct({ item }) {
                           onChange={handleChange}
                         />
                       </Col>
-                      <Col>
-                        {items?.product_category === "T-Shirt" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
                     </Row>
                     <Row style={{ height: "1.5em" }}>
                       <Col>
@@ -196,13 +132,6 @@ function UpdateProduct({ item }) {
                           checked={input?.category === "Pants"}
                           onChange={handleChange}
                         />
-                      </Col>
-                      <Col>
-                        {items?.product_category === "Pants" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
                       </Col>
                     </Row>
                     <Row style={{ height: "1.5em" }}>
@@ -217,13 +146,6 @@ function UpdateProduct({ item }) {
                           onChange={handleChange}
                         />
                       </Col>
-                      <Col>
-                        {items?.product_category === "Accessories" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
                     </Row>
                     <Row style={{ height: "1.5em" }}>
                       <Col>
@@ -236,13 +158,6 @@ function UpdateProduct({ item }) {
                           checked={input?.category === "Jacket"}
                           onChange={handleChange}
                         />
-                      </Col>
-                      <Col>
-                        {items?.product_category === "Jacket" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
                       </Col>
                     </Row>
                   </Form.Group>
@@ -266,13 +181,6 @@ function UpdateProduct({ item }) {
                           onChange={handleChange}
                         />
                       </Col>
-                      <Col>
-                        {items?.product_series === "Depression" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
                     </Row>
                     <Row>
                       <Col>
@@ -286,13 +194,6 @@ function UpdateProduct({ item }) {
                           onChange={handleChange}
                         />
                       </Col>
-                      <Col>
-                        {items?.product_series === "Happiness" ? (
-                          <p className="opacity-75">(default)</p>
-                        ) : (
-                          ""
-                        )}
-                      </Col>
                     </Row>
                   </Form.Group>
                 </Col>
@@ -305,8 +206,8 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="price"
-                    value={input.price || items?.product_price}
-                    placeholder={items?.product_price}
+                    value={input.price || ''}
+                    placeholder={'Masukan harga produk'}
                     onChange={handleChange}
                   />
                 </Col>
@@ -323,8 +224,8 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="discount"
-                    value={input.discount || items?.product_discountPercentage}
-                    placeholder={items?.product_discountPercentage}
+                    value={input.discount || ''}
+                    placeholder={'Masukan diskon produk'}
                     onChange={handleChange}
                   />
                 </Col>
@@ -337,8 +238,8 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="sku"
-                    value={input.sku || items?.product_sku}
-                    placeholder={items?.product_sku}
+                    value={input.sku || ''}
+                    placeholder={'Masukan SKU produk'}
                     onChange={handleChange}
                   />
                 </Col>
@@ -355,18 +256,11 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="stock"
-                    value={input.stock || items?.product_quantityStock}
-                    placeholder={items?.product_quantityStock}
+                    value={input.stock || ''}
+                    placeholder={'Masukan stok produk'}
                     onChange={handleChange}
                   />
                 </Col>
-                {items?.product_quantityStock === 0 ? (
-                  <Form.Label className="text-danger d-flex justify-content-start mb-4">
-                    Stok Barang Habis!
-                  </Form.Label>
-                ) : (
-                  ""
-                )}
               </Form.Group>
               <Form.Group
                 as={Row}
@@ -380,8 +274,8 @@ function UpdateProduct({ item }) {
                   <Form.Control
                     type="text"
                     name="description"
-                    value={input.description || items?.product_description}
-                    placeholder={items?.product_description}
+                    value={input.description || ''}
+                    placeholder={'Masukan deskripsi produk'}
                     onChange={handleChange}
                   />
                 </Col>
@@ -426,9 +320,7 @@ function UpdateProduct({ item }) {
             </Form>
           </Col>
         </Row>
-      </Container>
-    </>
-  );
+        </>
+    )
 }
-
-export default UpdateProduct;
+export default AddProduct;

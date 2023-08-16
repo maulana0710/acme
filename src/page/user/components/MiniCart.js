@@ -45,46 +45,36 @@ function MiniCart({ item = [], cart = [], user = [] }) {
 
   return (
     <>
-      <Card style={{ height: "18rem" }} className="overflow-auto scroll">
+      <Card style={{ height: "18rem" }} className="overflow-auto scroll border border-0">
         {productsFilter.map((value, index) => {
           const size = value.product_sku.slice(-2).replaceAll(/[0-9]/g, "");
           return (
             <Link
               to={`/DetailProduct/${value?.product_uuid}`}
               style={{ textDecoration: "none" }}
+              className="mt-1 mb-1"
               key={index}
             >
               <Card.Body
-                className="d-flex flex-wrap border text-dark"
-                style={{ width: "16rem" }}
+                className="d-flex flex-wrap border border-end-0 rounded-0 rounded-start text-dark btn btn-light text-start"
+                style={{ width: "22rem" }}
               >
-                <Row>
-                  <Col sm={4}>
-                    <img
-                      className="mt-1 mb-1 w-100"
-                      src={value?.product_imageUrl1}
-                      alt="preview"
-                    />
-                  </Col>
-                  <Col sm={8}>
-                    <Card.Title>
-                      <h6>{value?.product_name}</h6>
-                    </Card.Title>
-                    <Row>
-                      <Col>
-                        <Button
-                          variant="danger"
-                          onClick={RemoveCartItem()}
-                          className="h-30 mt-2"
-                        >
-                          Remove
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col>Size: {size}</Col>
-                  <Col>Jumlah Barang: {value?.cartValue}</Col>
-                </Row>
+                <Col sm={4}>
+                  <img
+                    className="mt-1 mb-1 w-100"
+                    src={value?.product_imageUrl1}
+                    alt="preview"
+                  />
+                </Col>
+                <Col sm={6} className='ms-2'>
+                  <Card.Title>
+                    <h6>{value?.product_name}</h6>
+                  </Card.Title>
+                  <Row>
+                    <Col>Size: {size}</Col>
+                    <Col>Jumlah Barang: {value?.cartValue}</Col>
+                  </Row>
+                </Col>
               </Card.Body>
             </Link>
           );

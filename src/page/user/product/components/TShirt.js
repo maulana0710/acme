@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Alert,
   Button,
   Card,
   Carousel,
@@ -10,19 +11,36 @@ import {
 } from "react-bootstrap";
 import AddWishlist from "./AddWishlist";
 import ComingSoon from "./ComingSoon";
+import { FcLikePlaceholder } from "react-icons/fc";
+import jwt_decode from "jwt-decode";
 
 function TShirt({ unique = [], wishlist = [], cart = [] }) {
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const sessionData = sessionStorage.getItem("user");
+  const user = JSON.parse(sessionData);
+  const [userLogin, setUserLogin] = React.useState();
+  React.useEffect(() => {
+    if (sessionData === null) {
+      // console.log(sessionData);
+    }else{
+      const parseData = JSON.parse(sessionData);
+      var decoded = jwt_decode(parseData?.token);
+      // console.log(userLogin);
+      setUserLogin(decoded?.results[0]);
+      
+    }
+  }, [sessionData])
+
   const [products, setProducts] = useState([]);
+  const [show, setShow] = useState(false);
 
   var productTShirt = unique.filter(function (el) {
     return el.product_category === "T-Shirt";
   });
 
-  var user = userLogin?.user_uuid;
+  var userId = userLogin?.user_uuid;
   const uniqueUserFilter = [];
   const uniqueUser = wishlist.filter((element) => {
-    if (element.wishlist_userUUID === user) {
+    if (element.wishlist_userUUID === userId) {
       uniqueUserFilter.push(element.wishlist_userUUID);
       return true;
     }
@@ -33,7 +51,6 @@ function TShirt({ unique = [], wishlist = [], cart = [] }) {
   useEffect(() => {
     if (unique.length !== 0) {
       // console.log(`unique`, unique);
-
       const itemWishlist = [];
       // console.log("product UUID wishlist", itemWishlist);
       const findWishList = productTShirt.filter((product) =>
@@ -78,21 +95,36 @@ function TShirt({ unique = [], wishlist = [], cart = [] }) {
       return a.sortableDate - b.sortableDate;
     });
 
-  // console.log(`products`, sortedDataProduct);
-  // console.log(`wishlist`, wishlist);
-
-  // console.log('produk kaos :', productTShirt);
   return (
     <>
       {productTShirt.length ? (
         <Container>
+          <Alert className="mt-4" show={show} variant="danger">
+            <Alert.Heading>Please Login First!</Alert.Heading>
+            <p>
+              Amet deserunt qui consectetur veniam minim. Consectetur ut sit eu
+              reprehenderit aliquip et veniam officia. Aliquip aliqua commodo
+              nisi consectetur ex aliquip id veniam culpa fugiat aliqua aliquip.
+              Incididunt nostrud aute laboris pariatur id cillum ex deserunt
+              nisi aute. Enim ut nostrud adipisicing nostrud officia dolore
+              eiusmod veniam aute officia adipisicing. Non amet officia sunt id
+              ad cupidatat eu proident enim. Esse consequat proident elit duis
+              adipisicing enim sunt cillum duis tempor aliqua proident aliqua.
+            </p>
+            <hr />
+            <div className="d-flex justify-content-end">
+              <Button onClick={() => setShow(false)} variant="outline-danger">
+                Close me
+              </Button>
+            </div>
+          </Alert>
           <Stack direction="vertical" gap={3}>
             <div>
               <Row className="text-dark mb-4">
                 {sortedDataProduct.map((value, index) => {
                   return (
-                    <Col  key={index} className="mt-4">
-                      <Card style={{ width: "100%", maxWidth: '18rem' }}>
+                    <Col key={index} className="mt-4">
+                      <Card style={{ width: "100%", maxWidth: "18rem" }}>
                         <Carousel variant="dark" controls={false}>
                           <Carousel.Item>
                             <img
@@ -136,8 +168,13 @@ function TShirt({ unique = [], wishlist = [], cart = [] }) {
                             {value?.product_name}
                           </Card.Title>
                           <Card.Text>
-                            "Some quick example text to build on the card title
-                            and make up the bulk of the card's content."
+                            "Eu nostrud enim ipsum commodo laboris laboris
+                            dolore id cillum elit aliqua. Reprehenderit in minim
+                            exercitation veniam anim aute. Nostrud adipisicing
+                            incididunt aute quis deserunt do Lorem do aliqua
+                            incididunt aute quis adipisicing commodo. Lorem aute
+                            do nisi sit ad sit nulla fugiat fugiat esse. Veniam
+                            Lorem consequat reprehenderit velit."
                           </Card.Text>
                           <Row>
                             <Col>
@@ -149,13 +186,25 @@ function TShirt({ unique = [], wishlist = [], cart = [] }) {
                               </Button>
                             </Col>
                             <Col>
-                              <AddWishlist
-                                wishlistFeature={value}
-                                wishlist={wishlist}
-                                wishlistId={value?.product_uuid}
-                                isWishList={value.isWishList}
-                                allItemWishlist={uniqueUser}
-                              />
+                              {user?.success === true ? (
+                                <AddWishlist
+                                  wishlistFeature={value}
+                                  wishlist={wishlist}
+                                  wishlistId={value?.product_uuid}
+                                  isWishList={value.isWishList}
+                                  allItemWishlist={uniqueUser}
+                                  userID={userId}
+                                />
+                              ) : (
+                                <>
+                                  {!show && (
+                                    <FcLikePlaceholder
+                                      type="button"
+                                      onClick={(e) => setShow(e)}
+                                    />
+                                  )}
+                                </>
+                              )}
                             </Col>
                           </Row>
                         </Card.Body>

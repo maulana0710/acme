@@ -7,10 +7,13 @@ import PasswordUser from "./components/PasswordUser";
 import ProfileUser from "./components/ProfileUser";
 import FillExample from "../components/SidebarProfile";
 import "../../../style/scroll.css";
+import jwt_decode from 'jwt-decode';
 
 function AccountSetting({ item = [] }) {
-
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const sessionData = sessionStorage.getItem('user');
+  const parseData = JSON.parse(sessionData);
+  var decoded = jwt_decode(parseData?.token);
+  const userLogin = decoded?.results[0]
 
   let acronym = userLogin.user_username.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'').toUpperCase();  
   // console.log(acronym);
@@ -28,26 +31,16 @@ function AccountSetting({ item = [] }) {
     setProfileUser(true);
     setPasswordUser(false);
     setListTransaction(false);
-    setPaymentUser(false);
   };
   const [passwordUser, setPasswordUser] = useState(false);
   const openPasswordUser = () => {
     setPasswordUser(true);
     setProfileUser(false);
     setListTransaction(false);
-    setPaymentUser(false);
   };
   const [listTransaction, setListTransaction] = useState(false);
   const openListTransaction = () => {
     setListTransaction(true);
-    setProfileUser(false);
-    setPasswordUser(false);
-    setPaymentUser(false);
-  };
-  const [paymentUser, setPaymentUser] = useState(false);
-  const openPaymentUser = () => {
-    setPaymentUser(true);
-    setListTransaction(false);
     setProfileUser(false);
     setPasswordUser(false);
   };
@@ -81,11 +74,6 @@ function AccountSetting({ item = [] }) {
               <Col sm="2" className="p-0">
                 <div className="bg-dark overflow-hidden text-light h-100">
                   <Row className="justify-content-center mt-2 mb-2">
-                    {/* <img
-                      className="w-50 border rounded-circle mb-2"
-                      src={userLogin.image}
-                      alt="ImageUser"
-                    /> */}
                     <h1 className="border rounded-circle mb-2 bg-secondary" style={{ width:'max-content', height:'max-content' }}>{acronym}</h1>
                     <div>
                       <h5>
@@ -101,15 +89,9 @@ function AccountSetting({ item = [] }) {
                       Password
                     </Nav.Link>
                     <Nav.Link className={listTransaction ? "btn active" : 'btn'} id="listTransaction" onClick={() => openListTransaction()}>
-                      List Transaction
+                      Daftar Transaksi
                     </Nav.Link>
-                    <Nav.Link className={paymentUser ? "btn active" : 'btn'} id="paymentUser" onClick={() => openPaymentUser()}>
-                      Payment
-                    </Nav.Link>
-                    <Nav.Link className="btn" href="#/Help">
-                      Help
-                    </Nav.Link>
-                    <Nav.Link className="btn" href="/Logout">
+                    <Nav.Link className="btn border-top mt-4" href="/Logout">
                       Logout
                     </Nav.Link>
                   </Row>
