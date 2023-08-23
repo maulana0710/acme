@@ -68,7 +68,6 @@ function ColorSchemesExample({
                   Series Happiness
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#/AboutUs">About Us</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown

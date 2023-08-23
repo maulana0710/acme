@@ -16,7 +16,6 @@ import CarouselFadeProduct from "./page/user/Corousel";
 import Footer from "./page/user/components/Footer";
 import BasicExample from "./page/auth/Login";
 import UserContext from "./page/user/Context";
-import Progress from "./page/user/components/Progress";
 import Cart from "./page/user/Cart";
 import MiniCart from "./page/user/components/MiniCart";
 import RemoveCartItem from "./page/user/RemoveCartItem";
@@ -49,6 +48,8 @@ import Accessories from "./page/user/product/components/Accessories";
 import ForgotPassword from "./page/user/ForgotPassword";
 import PurchaseConfirmation from "./page/user/PurchaseConfirmation";
 import Purchasing from "./page/user/Purchasing";
+import PurchaseSuccessful from "./page/user/PurchaseSuccessful";
+import PurchasingDetail from "./page/admin/PurchasingDetail";
 // admin
 
 function App() {
@@ -96,20 +97,25 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-
+  const [orders, setOrders] = useState([]);
+  React.useEffect(() => {
+    getOrders();
+  }, []);
+  const getOrders = async () => {
+    await axios
+      .get(`http://localhost:8080/order/filtered`)
+      .then(function (response) {
+        // handle success
+        // console.log(response);
+        setOrders(response.data.data);
+        //   console.log(response.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div className="App font-source-sans-pro" style={{ overflowX: "hidden" }}>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Index
-              item={itemProducts}
-              wishlist={wishlistProduct}
-              cart={cartProduct}
-            />
-          }
-        />
+        <Route path="/" element={<Index item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
         <Route path="/App" element={<App />} />
         <Route path="/Login" element={<BasicExample />} />
         <Route path="/Logout" element={<Logout />} />
@@ -118,30 +124,10 @@ function App() {
 
         {/* Product Page */}
         <Route
-          path="/SeriesDepression"
-          element={
-            <ProductSeriesDepression
-              item={itemProducts}
-              wishlist={wishlistProduct}
-              cart={cartProduct}
-            />
-          }
-        />
-        <Route
-          path="/SeriesHappiness"
-          element={
-            <ProductSeriesHappiness
-              item={itemProducts}
-              wishlist={wishlistProduct}
-              cart={cartProduct}
-            />
-          }
-        />
+          path="/SeriesDepression" element={<ProductSeriesDepression item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
+        <Route path="/SeriesHappiness" element={ <ProductSeriesHappiness  item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
         <Route path="/AllProduct" element={<AllProduct />} />
-        <Route
-          path="/DetailProduct/:uuidProduct"
-          element={<DetailProduct item={itemProducts} cart={cartProduct} />}
-        />
+        <Route path="/DetailProduct/:uuidProduct" element={<DetailProduct item={itemProducts} cart={cartProduct} />} />
         <Route path="/ProductSizeS/:uuidProduct" element={<ProductSizeS />} />
         <Route path="/ProductSizeM/:uuidProduct" element={<ProductSizeM />} />
         <Route path="/ProductSizeL/:uuidProduct" element={<ProductSizeL />} />
@@ -162,57 +148,29 @@ function App() {
 
         {/* Navigation */}
         <Route path="/NavigationBar" element={<ColorSchemesExample />} />
-        <Route
-          path="/AccountSetting"
-          element={<AccountSetting item={itemProducts} />}
-        />
+        <Route path="/AccountSetting" element={<AccountSetting item={itemProducts} />} />
         <Route path="/SidebarProfile" element={<FillExample />} />
         <Route path="/Context" element={<UserContext />} />
-        <Route path="/Progress" element={<Progress />} />
-        <Route
-          path="/ListTransaction"
-          element={<ListTransaction item={itemProducts} />}
-        />
-        <Route
-          path="/Wishlist"
-          element={<Wishlist item={itemProducts} wishlist={wishlistProduct} />}
-        />
-        <Route
-          path="/Cart"
-          element={<Cart item={itemProducts} cart={cartProduct} />}
-        />
-        <Route
-          path="/PurchaseConfirmation"
-          element={
-            <PurchaseConfirmation item={itemProducts} cart={cartProduct} />
-          }
-        />
-        <Route
-          path="/Purchasing"
-          element={<Purchasing item={itemProducts} />}
-        />
+        <Route path="/ListTransaction" element={<ListTransaction item={itemProducts} />} />
+        <Route path="/Wishlist" element={<Wishlist item={itemProducts} wishlist={wishlistProduct} />} />
+        <Route path="/Cart" element={<Cart item={itemProducts} cart={cartProduct} />} />
+        <Route path="/PurchaseConfirmation" element={ <PurchaseConfirmation item={itemProducts} cart={cartProduct} />} />
+        <Route path="/PurchaseSuccessful" element={<PurchaseSuccessful />} />
+        <Route path="/Purchasing" element={<Purchasing item={itemProducts} wishlist={wishlistProduct} cart={cartProduct}/>} />
         <Route path="/MiniCart" element={<MiniCart />} />
         <Route path="/RemoveCartItem" element={<RemoveCartItem />} />
-        <Route
-          path="/StoreItemCartUser"
-          element={<StoreItemCartUser item={itemProducts} />}
-        />
+        <Route path="/StoreItemCartUser" element={<StoreItemCartUser item={itemProducts} />} />
         <Route path="/Footer" element={<Footer />} />
         {/* Navigation */}
 
         {/* admin */}
-        <Route
-          path="/AdminManager"
-          element={<AdminManager item={itemProducts} />}
-        />
+        <Route path="/AdminManager" element={<AdminManager item={itemProducts} orders={orders} />} />
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/Users" element={<Users />} />
         <Route path="/Products" element={<Products />} />
-        <Route
-          path="/UpdateProduct/:uuid"
-          element={<UpdateProduct item={itemProducts} />}
-        />
-        <Route path="/Orders" element={<Orders />} />
+        <Route path="/UpdateProduct/:uuid" element={<UpdateProduct item={itemProducts} />} />
+        <Route path="/Orders" element={<Orders item={itemProducts} />} />
+        <Route path="/PurchaseDetail/:uuid" element={<PurchasingDetail orders={orders}/>} />
         {/* admin */}
       </Routes>
     </div>

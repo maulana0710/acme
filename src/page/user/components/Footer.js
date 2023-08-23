@@ -7,14 +7,7 @@ function Footer() {
       <Card className="text-dark">
         <Card.Body>
           <blockquote className="blockquote mb-0">
-            <p>
-              {" "}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              posuere erat a ante.{" "}
-            </p>
-            <footer className="blockquote-footer">
-              Someone famous in <cite title="Source Title">Source Title</cite>
-            </footer>
+            <footer className="blockquote-footer">©2023</footer>
           </blockquote>
         </Card.Body>
       </Card>

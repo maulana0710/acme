@@ -3,6 +3,7 @@ import { Button, Carousel, Col, Container, Form, Row } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AcmeO2 from "../../img/AcmeO2.svg";
 import axios from "axios";
+import Footer from "../user/components/Footer";
 
 function UpdateProduct({ item }) {
   const { uuid } = useParams();
@@ -427,6 +428,7 @@ function UpdateProduct({ item }) {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </>
   );
 }

@@ -48,9 +48,6 @@ function FillExample({ SidebarProfile }) {
         <Nav.Link className="btn" href="/Purchasing">
           Pembelian
         </Nav.Link>
-        <Nav.Link className="btn" href="#/Bantuan">
-          Bantuan
-        </Nav.Link>
         <Nav.Link className="btn" href="/Logout">
           Logout
         </Nav.Link>

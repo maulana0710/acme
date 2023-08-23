@@ -10,12 +10,6 @@ import Footer from "./components/Footer";
 import axios from "axios";
 import AcmeO2 from "../../img/AcmeO2.svg";
 
-// import { useAtom } from "jotai";
-// import { atomWithStore } from "jotai/zustand";
-// import create from "zustand/vanilla";
-// const store = create(() => ({ }));
-// export const stateAtom = atomWithStore(store);
-
 function ForgotPassword() {
   const [input, setInput] = useState({});
   const [userFound, setUserFound] = useState(false);

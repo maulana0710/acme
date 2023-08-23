@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Col, Container, Nav, Row } from "react-bootstrap";
 import Footer from "../components/Footer";
 import ListTransaction from "./components/ListTransaction";
@@ -8,12 +8,29 @@ import ProfileUser from "./components/ProfileUser";
 import FillExample from "../components/SidebarProfile";
 import "../../../style/scroll.css";
 import jwt_decode from 'jwt-decode';
+import axios from "axios";
 
 function AccountSetting({ item = [] }) {
   const sessionData = sessionStorage.getItem('user');
   const parseData = JSON.parse(sessionData);
   var decoded = jwt_decode(parseData?.token);
   const userLogin = decoded?.results[0]
+  // get order
+  const [order, setOrder] = useState([]);
+  React.useEffect(() => {
+    getOrder();
+  }, []);
+  const getOrder = async () => {
+    await axios
+      .get(`http://localhost:8080/order/user/${userLogin?.user_uuid}`)
+      .then(function (response) {
+        // handle success
+        // console.log(response);
+        setOrder(response.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  // get order
 
   let acronym = userLogin.user_username.split(/\s/).reduce((response,word)=> response+=word.slice(0,1),'').toUpperCase();  
   // console.log(acronym);
@@ -101,7 +118,7 @@ function AccountSetting({ item = [] }) {
                 {/* Content */}
                 {profileUser ? <ProfileUser /> : ''}
                 {passwordUser ? <PasswordUser /> : ''}
-                {listTransaction ? <ListTransaction item={item}/> : ''}
+                {listTransaction ? <ListTransaction order={order}/> : ''}
               </Col>
             </Row>
           </Container>

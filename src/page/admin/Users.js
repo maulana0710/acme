@@ -31,13 +31,24 @@ function Users({ users }) {
                             {acronym}
                           </h1>
                         </Row>
-                        <Card.Body>
+                        <Card.Body style={{ maxWidth: "25em" }}>
                           <Card.Title>{value.user_username}</Card.Title>
-                          <Card.Text>
-                            "Some quick example text to build on the card title
-                            and make up the bulk of the card's content."
-                          </Card.Text>
-                          {/* <Button variant="primary">Detail Product</Button> */}
+                          <Row>
+                            <Col sm='5'>Role:</Col>
+                            <Col>{value?.user_role}</Col>
+                          </Row>
+                          <Row>
+                            <Col sm='5'>No Telepon:</Col>
+                            <Col>{value?.user_phoneNumber}</Col>
+                          </Row>
+                          <Row>
+                            <Col sm='5'>Alamat:</Col>
+                            <Col align='justify'>{value?.user_address}</Col>
+                          </Row>
+                          <Row>
+                            <Col sm='5'>Kode Pos:</Col>
+                            <Col align='justify'>{value?.user_postalCode}</Col>
+                          </Row>
                         </Card.Body>
                       </Card>
                     </Col>

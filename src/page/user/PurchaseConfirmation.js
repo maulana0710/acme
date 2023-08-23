@@ -16,6 +16,7 @@ import FillExample from "./components/SidebarProfile";
 import AddCart from "./product/components/AddCart";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function PurchaseConfirmation({ item = [], cart = [] }) {
   const [province, setProvince] = React.useState([]);
@@ -56,7 +57,6 @@ function PurchaseConfirmation({ item = [], cart = [] }) {
   // console.log("barang =", item);
   // console.log("keranjang =", cart);
   const productsFilter = [];
-
   var userUUID = userLogin?.user_uuid;
   const cartUserAfterFilter = [];
   const uniqueUser = cart.filter((element) => {
@@ -93,6 +93,7 @@ function PurchaseConfirmation({ item = [], cart = [] }) {
   }
   const [input, setInput] = useState({});
   const [inputFile1, setInputFile1] = useState("");
+  let navigate = useNavigate();
 
   const handleFileChange1 = (event) => {
     setInputFile1(event.target.files[0]);
@@ -106,30 +107,32 @@ function PurchaseConfirmation({ item = [], cart = [] }) {
     event.preventDefault();
     console.log("input", input);
     console.log(inputFile1);
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("name", input.name || productsFilter?.product_name);
-    //   formData.append("file1", inputFile1);
+    try {
+      const formData = new FormData();
+      formData.append("userUUID", userLogin?.user_uuid);
+      formData.append("productUUID", productsFilter[0]?.product_uuid);
+      formData.append("receiver", userLogin?.user_username);
+      formData.append("phoneNumber", userLogin?.user_phoneNumber);
+      formData.append("address", userLogin?.user_address);
+      formData.append("postalCode", userLogin?.user_postalCode);
+      formData.append("status", "verifikasi persediaan");
+      formData.append("file1", inputFile1);
 
-    //   const response = await axios.post(
-    //     //   `http://localhost:8080/product/edit/${items?.product_uuid}`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-
-    //   console.log(response.data.success);
-    //   if (response.data.success === true) {
-    //     console.log("berhasil upload");
-    //     //   navigate(`/AdminManager`, { state: { updateProductTrue: true } });
-    //   }
-    // } catch (error) {
-    //   console.log("gagal upload", error);
-    //   throw error;
-    // }
+      const response = await axios.post(
+        `http://localhost:8080/order/add`,
+        formData
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
+      );
+      console.log(response.data.success);
+      navigate("/PurchaseSuccessful");
+    } catch (error) {
+      console.log("gagal upload", error);
+      throw error;
+    }
   };
 
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -335,83 +338,80 @@ function PurchaseConfirmation({ item = [], cart = [] }) {
                               </Row>
                             </Col>
                           </Row>
-                          <Row className="mb-4">
-                            <Col md={4} className="mt-3">
-                              <Button
-                                onClick={toggleShowA}
-                                className="mb-2 border border-dark"
-                                variant="light"
-                              >
-                                Konfirmasi Alamat
-                              </Button>
-                              <Toast show={showA} onClose={toggleShowA}>
-                                {/* <Toast.Header>
-                                </Toast.Header> */}
-                                <Form
-                                  className="m-2"
-                                  onSubmit={handleSubmitCost}
-                                >
-                                  <Row>
-                                    <Col>
-                                      <Toast.Body>Kota:</Toast.Body>
-                                    </Col>
-                                    <Col>
-                                      <Form.Select
-                                        aria-label="Default select example"
-                                        name="destination"
-                                        onChange={handleChangeCost}
-                                      >
-                                        <option disabled>Pilih</option>
-                                        {province?.map((values) => {
-                                          return (
-                                            <option value={values?.city_id}>
-                                              {values?.city_name}
-                                            </option>
-                                          );
-                                        })}
-                                      </Form.Select>
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col>
-                                      <Button
-                                        variant="light"
-                                        className="border"
-                                        onClick={(e) => handleSubmitCost(e)}
-                                        // type="submit"
-                                      >
-                                        Masukan
-                                      </Button>
-                                    </Col>
-                                  </Row>
-                                </Form>
-                              </Toast>
-                            </Col>
-                            <Col sm="8" className="mt-3">
-                              {shippingCost === 0 ? (
-                                <Button
-                                  variant="primary"
-                                  className="border w-25"
-                                  type="submit"
-                                  disabled
-                                >
-                                  Beli
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="primary"
-                                  className="border w-25"
-                                  type="submit"
-                                >
-                                  Beli
-                                </Button>
-                              )}
-                            </Col>
-                          </Row>
                         </Col>
                       </Row>
                     );
                   })}
+                  <Row className="mb-4 bg-light">
+                    <Col md={2}></Col>
+                    <Col md='4' className="mt-3">
+                      <Button
+                        onClick={toggleShowA}
+                        className="mb-2 border border-dark"
+                        variant="light"
+                      >
+                        Konfirmasi Alamat
+                      </Button>
+                      <Toast show={showA} onClose={toggleShowA}>
+                        <Form className="m-2" onSubmit={handleSubmitCost}>
+                          <Row>
+                            <Col sm='4'>
+                              <Toast.Body className="text-dark">
+                                Kota:
+                              </Toast.Body>
+                            </Col>
+                            <Col>
+                              <Form.Select
+                                aria-label="Default select example"
+                                name="destination"
+                                onChange={handleChangeCost}
+                              >
+                                <option disabled>Pilih</option>
+                                {province?.map((values) => {
+                                  return (
+                                    <option value={values?.city_id}>
+                                      {values?.city_name}
+                                    </option>
+                                  );
+                                })}
+                              </Form.Select>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <Button
+                                variant="light"
+                                className="border"
+                                onClick={(e) => handleSubmitCost(e)}
+                              >
+                                Masukan
+                              </Button>
+                            </Col>
+                          </Row>
+                        </Form>
+                      </Toast>
+                    </Col>
+                    <Col sm="6" className="mt-3">
+                      {shippingCost === 0 ? (
+                        <Button
+                          variant="primary"
+                          className="border w-25"
+                          type="submit"
+                          disabled
+                        >
+                          Beli
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="primary"
+                          className="border w-25"
+                          type="submit"
+                        >
+                          Beli
+                        </Button>
+                      )}
+                    </Col>
+                  </Row>
                 </Col>
                 <Col sm="auto">
                   <Card style={{ width: "20rem" }}>

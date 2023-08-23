@@ -13,36 +13,35 @@ import jwt_decode from "jwt-decode";
 import AddProduct from "./AddProduct";
 import UpdateProduct from "./UpdateProduct";
 
-function AdminManager({ item }) {
+function AdminManager({ item, orders = [] }) {
   const location = useLocation();
   const updateProductTrue = location.state?.updateProductTrue;
-  console.log("cek update true/false :", updateProductTrue);
+  // console.log("cek update true/false :", updateProductTrue);
 
   let navigate = useNavigate();
   const sessionData = sessionStorage.getItem("user");
   const [userLogin, setUserLogin] = React.useState();
-  // console.log("cek ", userLogin);
+  const parseData = JSON.parse(sessionData);
   React.useEffect(() => {
     if (sessionData === null) {
       // console.log(sessionData);
     } else {
-      const parseData = JSON.parse(sessionData);
       var decoded = jwt_decode(parseData?.token);
       // console.log(userLogin);
       setUserLogin(decoded?.results[0]);
     }
   }, [sessionData]);
 
+  React.useEffect(() => {
+    if (parseData?.r === "admin") {
+      console.log("akun admin");
+    } else {
+      console.log("akun user");
+      navigate("/");
+    }
+  });
   // kondisi pengecekan role BELUM KELAR
-  // React.useEffect(() => {
-  //   if (userLogin?.user_role === "admin") {
-  //     console.log("akun admin");
-  //   } else {
-  //     console.log("akun user");
-  //     navigate("/");
-  //   }
-  // });
-  // kondisi pengecekan role BELUM KELAR
+
 
   // get users
   const [users, setUsers] = useState([]);
@@ -56,7 +55,6 @@ function AdminManager({ item }) {
         // handle success
         // console.log(response);
         setUsers(response.data.data);
-        console.log(response.data.data);
       })
       .catch((err) => console.log(err));
   };
@@ -161,7 +159,8 @@ function AdminManager({ item }) {
                 className="w-100 mb-2 broken-light"
                 src={LogoAcmeO2}
                 alt="ImageUser"
-                href='/'
+                type='button'
+                onClick={() => {navigate('/')}}
               />
               <div>
                 <h5>{userLogin?.user_username}</h5>
@@ -242,7 +241,7 @@ function AdminManager({ item }) {
             className="overflow-auto scroll bg-light text-dark rounded"
           >
             {/* Content */}
-            {dashboard ? <Dashboard /> : ""}
+            {dashboard ? <Dashboard item={item}/> : ""}
             {user ? <Users users={users} /> : ""}
             {product ? <Products item={item} /> : ""}
             {addProduct ? <AddProduct item={item} /> : ""}

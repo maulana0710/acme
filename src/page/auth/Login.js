@@ -11,12 +11,6 @@ import Footer from "../user/components/Footer";
 import axios from "axios";
 import AcmeO2 from "../../img/AcmeO2.svg";
 
-// import { useAtom } from "jotai";
-// import { atomWithStore } from "jotai/zustand";
-// import create from "zustand/vanilla";
-// const store = create(() => ({ }));
-// export const stateAtom = atomWithStore(store);
-
 function BasicExample() {
   const [input, setInput] = useState({});
   let navigate = useNavigate();
@@ -30,10 +24,6 @@ function BasicExample() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(input);
-    // console.log(username, password);
-    // if (userData) {
-    //   console.log("user login", userData.user_username);
-    // if (userData.user_password === input.password) {
     try {
       const response = axios.post("http://localhost:8080/user/login", {
         username: input.username,
@@ -51,7 +41,6 @@ function BasicExample() {
           console.log(error);
         }
       });
-      // console.log(response);
     } catch (error) {
       console.log("login gagal", error);
       throw error;

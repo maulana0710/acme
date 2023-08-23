@@ -77,25 +77,6 @@ function Cart({ item = [], cart = [] }) {
     setMCart(false);
   };
 
-  // const [state, setState] = useAtom(stateAtom);
-  // console.log("item =", state);
-
-  // const [productAmount, setProductAmount] = React.useState();
-  // const [amount, setAmount] = React.useState(1);
-  // const increase = () => {
-  //   if (amount === productsFilter?.product_quantityStock) {
-  //     setAmount(productsFilter?.product_quantityStock);
-  //   } else {
-  //     setAmount(amount + 1);
-  //   }
-  // };
-  // const decrease = () => {
-  //   if (amount === 1) {
-  //     setAmount(1);
-  //   } else {
-  //     setAmount(amount - 1);
-  //   }
-  // };
   return (
     <div
       className={
