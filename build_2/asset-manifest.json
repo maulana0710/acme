@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1f14d410.css",
+    "main.js": "/static/js/main.eafdb0f0.js",
+    "static/js/787.6007394a.chunk.js": "/static/js/787.6007394a.chunk.js",
+    "static/media/advertise acme.png": "/static/media/advertise acme.6e393fba998565dec6cc.png",
+    "static/media/imgLogin.svg": "/static/media/imgLogin.f98362628815cb26cd3abb347192b0ed.svg",
+    "static/media/AcmeO2.svg": "/static/media/AcmeO2.6d2270e90f09c4d573102752f7585545.svg",
+    "index.html": "/index.html",
+    "main.1f14d410.css.map": "/static/css/main.1f14d410.css.map",
+    "main.eafdb0f0.js.map": "/static/js/main.eafdb0f0.js.map",
+    "787.6007394a.chunk.js.map": "/static/js/787.6007394a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1f14d410.css",
+    "static/js/main.eafdb0f0.js"
+  ]
+}

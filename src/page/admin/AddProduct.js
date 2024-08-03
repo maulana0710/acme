@@ -46,7 +46,7 @@ function AddProduct() {
       formData.append("file3", inputFile3);
 
       const response = await axios.post(
-        `http://localhost:8080/product/add`,
+        `https://api.acmeo2.online/product/add`,
         formData,
         {
           headers: {

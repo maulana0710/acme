@@ -8,6 +8,7 @@ import { stateAtom } from "./StoreItemCartUser";
 import FillExample from "./components/SidebarProfile";
 import AddCart from "./product/components/AddCart";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 function Cart({ item = [], cart = [] }) {
   const sessionData = sessionStorage.getItem("user");
@@ -231,13 +232,15 @@ function Cart({ item = [], cart = [] }) {
                     </Row>
                   );
                 })}
-                <Button
-                  variant="primary"
-                  className="border w-25"
-                  href="/PurchaseConfirmation"
-                >
-                  Beli
+                  <Link
+                    to={`/PurchaseConfirmation`}
+                    className="bg-primary text-light border w-25"
+                    style={{ textDecoration: "none" }}
+                  >
+                <Button variant="primary" className="border w-25">
+                    Beli
                 </Button>
+                  </Link>
               </Col>
             </Row>
           </Container>

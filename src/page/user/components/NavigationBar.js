@@ -13,6 +13,7 @@ import "../../../style/fadeEffect.css";
 import AcmeO2 from "../../../img/AcmeO2.svg";
 import React from "react";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 function ColorSchemesExample({
   SidebarProfile,
@@ -30,42 +31,59 @@ function ColorSchemesExample({
   React.useEffect(() => {
     if (sessionData === null) {
       // console.log(sessionData);
-    }else{
+    } else {
       const parseData = JSON.parse(sessionData);
       var decoded = jwt_decode(parseData?.token);
       // console.log(userLogin);
       setUserLogin(decoded?.results[0]);
-      
     }
-  }, [sessionData])
+  }, [sessionData]);
 
   return (
     <>
       <Navbar bg="light" variant="light" expand="lg" className="fs-5">
         <Container>
-          <Navbar.Brand className="fw-bolder" style={{ width: "10%" }} href="/">
-            <img src={AcmeO2} alt="AcmeO2" />
+          <Navbar.Brand className="fw-bolder" style={{ width: "10%" }}>
+            <Link
+              to={`/`}
+              className="text-light"
+              style={{ textDecoration: "none" }}
+            >
+              <img src={AcmeO2} alt="AcmeO2" />
+            </Link>
             {/* AcmeO<sup>2</sup> */}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link className={activeIndex ? "active" : ""} href="/">
-                Home
+              <Nav.Link className={activeIndex ? "active" : ""}>
+                <Link
+                  to="/"
+                  className="text-dark"
+                  style={{ textDecoration: "none" }}
+                >
+                  Home
+                </Link>
               </Nav.Link>
               <NavDropdown title="Product" id="collasible-nav-dropdown">
-                <NavDropdown.Item
-                  className={activeSd ? "active" : ""}
-                  href="/SeriesDepression"
-                >
-                  Series Depression
+                <NavDropdown.Item className={activeSd ? "active" : ""}>
+                  <Link
+                    to="/SeriesDepression"
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Series Depression
+                  </Link>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item
-                  className={activeSh ? "active" : ""}
-                  href="/SeriesHappiness"
-                >
-                  Series Happiness
+                <NavDropdown.Item className={activeSh ? "active" : ""}>
+                  <Link
+                    to="/SeriesHappiness"
+                    className="text-dark"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Series Happiness
+                  </Link>
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
@@ -103,11 +121,14 @@ function ColorSchemesExample({
 
                     <NavDropdown.Divider />
                     <div className="text-center">
-                      <NavDropdown.Item
-                        href="/Cart"
-                        className="w-50 badge bg-primary"
-                      >
-                        Keranjang
+                      <NavDropdown.Item className="w-50 badge bg-primary">
+                        <Link
+                          to="/Cart"
+                          className="text-light"
+                          style={{ textDecoration: "none" }}
+                        >
+                          Keranjang
+                        </Link>
                       </NavDropdown.Item>
                     </div>
                   </div>
@@ -122,8 +143,13 @@ function ColorSchemesExample({
                         />
                       </Card.Text>
                       <NavDropdown.Divider />
-                      <Button variant="primary" href="/Login">
-                        Login
+                      <Button variant="primary">
+                      <Link
+                        to={`/Login`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Login</Link>
                       </Button>
                     </Card.Body>
                   </Card>
@@ -136,9 +162,15 @@ function ColorSchemesExample({
                     {userLogin?.user_username}
                   </Nav.Link>
                 ) : (
-                  <Nav.Link href="/Login">
+                  <Nav.Link>
+                    <Link
+                        to={`/Login`}
+                        className="text-dark"
+                        style={{ textDecoration: "none" }}
+                      >
                     <BiUserCircle className="me-2" />
                     Login
+                      </Link>
                   </Nav.Link>
                 )}
               </div>

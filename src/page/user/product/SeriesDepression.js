@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 import ColorSchemesExample from "../components/NavigationBar";
 import FillExample from "../components/SidebarProfile";
 import AddWishlist from "./components/AddWishlist";
+import { Link } from "react-router-dom";
 
 function ProductSeriesDepression({ item = [], wishlist = [], cart = [] }) {
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -167,9 +168,15 @@ function ProductSeriesDepression({ item = [], wishlist = [], cart = [] }) {
                               <Col>
                                 <Button
                                   variant="secondary"
-                                  href={`./DetailProduct/${value?.product_uuid}`}
                                 >
+                                  <Link
+                        to={`./DetailProduct/${value?.product_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+
                                   Detail Product
+                      </Link>
                                 </Button>
                               </Col>
                               <Col>

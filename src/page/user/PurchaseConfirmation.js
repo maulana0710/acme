@@ -119,7 +119,7 @@ function PurchaseConfirmation({ item = [], cart = [] }) {
       formData.append("file1", inputFile1);
 
       const response = await axios.post(
-        `http://localhost:8080/order/add`,
+        `https://api.acmeo2.online/order/add`,
         formData
         // {
         //   headers: {

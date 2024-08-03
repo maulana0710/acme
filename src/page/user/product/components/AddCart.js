@@ -11,7 +11,7 @@ function AddCart(item = [] , carts = []) {
     if (existingProduct) {
       // console.log('update', existingProduct);
       try {
-          axios.post(`http://localhost:8080/cart/edit/${existingProduct?.cart_uuid}`, {
+          axios.post(`https://api.acmeo2.online/cart/edit/${existingProduct?.cart_uuid}`, {
             userUUID: item?.userUUID,
             productUUID: item?.product_uuid,
             cartValue: valueCart,
@@ -25,7 +25,7 @@ function AddCart(item = [] , carts = []) {
       // console.log('baru', carts);
       // console.log('user id', item?.userUUID);
       try {
-          axios.post("http://localhost:8080/cart/add", {
+          axios.post("https://api.acmeo2.online/cart/add", {
             userUUID: item?.userUUID,
             productUUID: item?.product_uuid,
             cartValue: item?.itemAmount,

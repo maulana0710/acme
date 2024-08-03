@@ -33,7 +33,7 @@ function SignUp() {
     event.preventDefault();
     console.log(input);
     try {
-      const response = axios.post("http://localhost:8080/user/add", {
+      const response = axios.post("https://api.acmeo2.online/user/add", {
         username: input.username,
         password: input.password,
         role: "user",

@@ -3,6 +3,7 @@ import { Button, Card, Col, Container, Row, Stack } from "react-bootstrap";
 import ColorSchemesExample from "./components/NavigationBar";
 import FillExample from "./components/SidebarProfile";
 import Footer from "./components/Footer";
+import { Link } from "react-router-dom";
 
 function PurchaseSuccessful() {
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -51,13 +52,19 @@ function PurchaseSuccessful() {
             </div>
             <Row className="align-items-end">
               <Col>
+              <Link
+            to={`/`}
+            className="text-light"
+            style={{ textDecoration: "none" }}
+          >
                 <Button
                   className="mb-2"
                   variant="primary"
-                  href="/"
                 >
+
                   Home
                 </Button>
+                  </Link>
               </Col>
             </Row>
           </Container>

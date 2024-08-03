@@ -1,7 +1,7 @@
 import { Carousel, Col, Container, Row } from "react-bootstrap";
 
-function PreviewHome({ item }) {
-  const sortedDataProduct = item.map(item => {
+function PreviewHome({ item = [] }) {
+  const sortedDataProduct = item?.map(item => {
     return {
       ...item,
       sortableDate: new Date(item.create_at).getTime()
@@ -9,6 +9,7 @@ function PreviewHome({ item }) {
   }).sort((a, b) => {
     return a.sortableDate - b.sortableDate;
   });
+  
   return (
     <>
       <Container className="text-white">

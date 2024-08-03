@@ -73,7 +73,7 @@ function UpdateProduct({ item }) {
       formData.append("file3", inputFile3);
 
       const response = await axios.post(
-        `http://localhost:8080/product/edit/${items?.product_uuid}`,
+        `https://api.acmeo2.online/edit/${items?.product_uuid}`,
         formData,
         {
           headers: {

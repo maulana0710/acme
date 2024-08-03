@@ -7,7 +7,7 @@ import Users from "./Users";
 import Products from "./Products";
 import Orders from "./Orders";
 import Dashboard from "./Dashboard";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import AddProduct from "./AddProduct";
@@ -42,7 +42,6 @@ function AdminManager({ item, orders = [] }) {
   });
   // kondisi pengecekan role BELUM KELAR
 
-
   // get users
   const [users, setUsers] = useState([]);
   React.useEffect(() => {
@@ -50,7 +49,7 @@ function AdminManager({ item, orders = [] }) {
   }, []);
   const getUsers = async () => {
     await axios
-      .get("http://localhost:8080/user")
+      .get("https://api.acmeo2.online/user")
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -59,7 +58,8 @@ function AdminManager({ item, orders = [] }) {
       .catch((err) => console.log(err));
   };
   // get users
-  const [updateProductcheck, setUpdateProductCheck] = useState(updateProductTrue);
+  const [updateProductcheck, setUpdateProductCheck] =
+    useState(updateProductTrue);
   const [show, setShow] = useState();
   const [dashboard, setDashboard] = useState(true);
   const openDashboard = () => {
@@ -116,7 +116,7 @@ function AdminManager({ item, orders = [] }) {
   const changeShow = () => {
     setShow(false);
     setUpdateProductCheck(false);
-  }
+  };
   React.useEffect(() => {
     if (updateProductcheck === true) {
       setProduct(true);
@@ -135,7 +135,7 @@ function AdminManager({ item, orders = [] }) {
         <>
           <Alert
             className="position-absolute top-0 start-50 translate-middle-x mt-2"
-            style={{ zIndex : '1' }}
+            style={{ zIndex: "1" }}
             show={show}
             variant="success"
           >
@@ -151,7 +151,10 @@ function AdminManager({ item, orders = [] }) {
       ) : (
         ""
       )}
-      <Row className={updateProductcheck === true ? "mb-2 opacity-50" : "mb-2"} style={{ zIndex : '2' }}>
+      <Row
+        className={updateProductcheck === true ? "mb-2 opacity-50" : "mb-2"}
+        style={{ zIndex: "2" }}
+      >
         <Col sm="2" className="p-0">
           <div className="bg-light overflow-hidden text-dark h-100">
             <Row className="justify-content-center mt-2 mb-2">
@@ -159,8 +162,10 @@ function AdminManager({ item, orders = [] }) {
                 className="w-100 mb-2 broken-light"
                 src={LogoAcmeO2}
                 alt="ImageUser"
-                type='button'
-                onClick={() => {navigate('/')}}
+                type="button"
+                onClick={() => {
+                  navigate("/");
+                }}
               />
               <div>
                 <h5>{userLogin?.user_username}</h5>
@@ -207,14 +212,16 @@ function AdminManager({ item, orders = [] }) {
                   Orders
                 </p>
               </Nav.Link>
-              <Nav.Link
-                style={{ height: "4rem" }}
-                className="btn border mt-5"
-                href="/Logout"
-              >
-                <p className="position-relative top-50 start-50 translate-middle">
-                  Logout
-                </p>
+              <Nav.Link style={{ height: "4rem" }} className="btn border mt-5">
+                <Link
+                  to="/Logout"
+                  className="text-light"
+                  style={{ textDecoration: "none" }}
+                >
+                  <p className="position-relative top-50 start-50 translate-middle">
+                    Logout
+                  </p>
+                </Link>
               </Nav.Link>
             </Row>
           </div>
@@ -241,7 +248,7 @@ function AdminManager({ item, orders = [] }) {
             className="overflow-auto scroll bg-light text-dark rounded"
           >
             {/* Content */}
-            {dashboard ? <Dashboard item={item}/> : ""}
+            {dashboard ? <Dashboard item={item} /> : ""}
             {user ? <Users users={users} /> : ""}
             {product ? <Products item={item} /> : ""}
             {addProduct ? <AddProduct item={item} /> : ""}

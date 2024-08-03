@@ -35,7 +35,7 @@ function ForgotPassword() {
     if (userFound === false) {
       try {
         const response = axios.post(
-          "http://localhost:8080/user/resetPassword",
+          "https://api.acmeo2.online/user/resetPassword",
           {
             username: input.username,
             phoneNumber: input.phoneNumber,
@@ -73,7 +73,7 @@ function ForgotPassword() {
         setPasswordMatch(true);
         try {
           const response = axios.post(
-            `http://localhost:8080/user/edit/${uuid}`,
+            `https://api.acmeo2.online/user/edit/${uuid}`,
             {
               username: input.username,
               password: input.newPassword,

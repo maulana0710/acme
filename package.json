@@ -2,6 +2,7 @@
   "name": "bbc",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://acmeo2.online",
   "dependencies": {
     "@amcharts/amcharts5": "^5.4.4",
     "@testing-library/jest-dom": "^5.16.5",

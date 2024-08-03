@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Carousel, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -9,7 +10,8 @@ function Orders() {
   }, []);
   const getOrders = async () => {
     await axios
-      .get("http://localhost:8080/order/filtered")
+      // .get("https://0db3-180-252-88-22.ngrok-free.app/order/filtered")
+      .get("https://api.acmeo2.online/order/filtered")
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -153,12 +155,15 @@ function Orders() {
                     </Col>
                   </Row>
                   <Row className="justify-content-center">
-                    <Button
-                      className="w-25 mb-2 mt-2"
-                      variant="primary"
-                      href={`/PurchaseDetail/${value?.order_uuid}`}
-                    >
-                      Detail Pesanan
+                    <Button className="w-25 mb-2 mt-2" variant="primary">
+                      <Link
+                        to={`/PurchaseDetail/${value?.order_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                        >
+                        Detail
+                        Pesanan
+                      </Link>
                     </Button>
                   </Row>
                 </div>

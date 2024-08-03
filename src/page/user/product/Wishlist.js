@@ -3,6 +3,7 @@ import { Button, Card, Col, Container, Row, Stack } from "react-bootstrap";
 import Footer from "../components/Footer";
 import ColorSchemesExample from "../components/NavigationBar";
 import FillExample from "../components/SidebarProfile";
+import { Link } from "react-router-dom";
 
 function Wishlist({ item = [], wishlist = [] }) {
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -117,9 +118,14 @@ function Wishlist({ item = [], wishlist = [] }) {
                             <Card.Title>{value.product_name}</Card.Title>
                             <Button
                               variant="primary"
-                              href={`./DetailProduct/${value?.product_uuid}`}
                             >
+                             <Link
+                        to={`./DetailProduct/${value?.product_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
                               Go somewhere
+                        </Link> 
                             </Button>
                           </Card.Body>
                         </Card>

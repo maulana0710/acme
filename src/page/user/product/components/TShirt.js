@@ -13,6 +13,7 @@ import AddWishlist from "./AddWishlist";
 import ComingSoon from "./ComingSoon";
 import { FcLikePlaceholder } from "react-icons/fc";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 function TShirt({ unique = [], wishlist = [], cart = [] }) {
   const sessionData = sessionStorage.getItem("user");
@@ -180,9 +181,15 @@ function TShirt({ unique = [], wishlist = [], cart = [] }) {
                             <Col>
                               <Button
                                 variant="secondary"
-                                href={`./DetailProduct/${value?.product_uuid}`}
                               >
+                                <Link
+                        to={`./DetailProduct/${value?.product_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+
                                 Detail Product
+                      </Link>
                               </Button>
                             </Col>
                             <Col>

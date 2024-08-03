@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 import ColorSchemesExample from "../components/NavigationBar";
 import FillExample from "../components/SidebarProfile";
 import AddWishlist from "./components/AddWishlist";
+import { Link } from "react-router-dom";
 
 function ProductSeriesHappiness({ item = [], wishlist = [], cart = [] }) {
   const [sidebarProfile, setSidebarProfile] = useState(false);
@@ -91,8 +92,13 @@ function ProductSeriesHappiness({ item = [], wishlist = [], cart = [] }) {
   }, [item]);
 
   return (
-    <div className={
-      sidebarProfile ? "bg-dark overflow-hidden text-light" : "bg-dark overflow-hidden text-light"}>
+    <div
+      className={
+        sidebarProfile
+          ? "bg-dark overflow-hidden text-light"
+          : "bg-dark overflow-hidden text-light"
+      }
+    >
       <Row onClick={closeMCart}>
         <Col
           sm={sidebarProfile ? 10 : 12}
@@ -116,7 +122,7 @@ function ProductSeriesHappiness({ item = [], wishlist = [], cart = [] }) {
                   {products.map((value, index) => {
                     return (
                       <Col xs={6} md={4} key={index} className="mt-4">
-                        <Card style={{ width: "100%", maxWidth: '18rem' }}>
+                        <Card style={{ width: "100%", maxWidth: "18rem" }}>
                           <Carousel variant="dark" controls={false}>
                             <Carousel.Item>
                               <img
@@ -165,11 +171,14 @@ function ProductSeriesHappiness({ item = [], wishlist = [], cart = [] }) {
                             </Card.Text>
                             <Row>
                               <Col>
-                                <Button
-                                  variant="secondary"
-                                  href={`./DetailProduct/${value?.product_uuid}`}
-                                >
-                                  Detail Product
+                                <Button variant="secondary">
+                                  <Link
+                                    to={`./DetailProduct/${value?.product_uuid}`}
+                                    className="text-light"
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    Detail Product
+                                  </Link>
                                 </Button>
                               </Col>
                               <Col>

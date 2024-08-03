@@ -34,7 +34,7 @@ function AddWishlist({ wishlistFeature, isWishList, wishlist, allItemWishlist, u
       console.log('remove wish UUID', wishlistUUID);
       console.log('User ID: ', userID, 'Product ID: ', wishlistFeature?.product_uuid, 'Wishlist ID', wishlistUUID);
       try {
-        await axios.post(`http://localhost:8080/wishlist/delete/${wishlistUUID}`);
+        await axios.post(`https://api.acmeo2.online/wishlist/delete/${wishlistUUID}`);
       }
       catch (error) {
         console.log(error);
@@ -45,7 +45,7 @@ function AddWishlist({ wishlistFeature, isWishList, wishlist, allItemWishlist, u
       console.log('add wish');
       console.log('User ID: ', userID, 'Product ID: ', wishlistFeature?.product_uuid, 'Wishlist ID', wishlistUUID);
       try {
-        await axios.post("http://localhost:8080/wishlist/add", {
+        await axios.post("https://api.acmeo2.online/wishlist/add", {
           userUUID: userID,
           productUUID: productID?.product_uuid
         });

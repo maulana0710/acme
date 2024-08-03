@@ -9,6 +9,7 @@ import FillExample from "../components/SidebarProfile";
 import "../../../style/scroll.css";
 import jwt_decode from 'jwt-decode';
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function AccountSetting({ item = [] }) {
   const sessionData = sessionStorage.getItem('user');
@@ -22,7 +23,7 @@ function AccountSetting({ item = [] }) {
   }, []);
   const getOrder = async () => {
     await axios
-      .get(`http://localhost:8080/order/user/${userLogin?.user_uuid}`)
+      .get(`https://api.acmeo2.online/order/user/${userLogin?.user_uuid}`)
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -108,8 +109,13 @@ function AccountSetting({ item = [] }) {
                     <Nav.Link className={listTransaction ? "btn active" : 'btn'} id="listTransaction" onClick={() => openListTransaction()}>
                       Daftar Transaksi
                     </Nav.Link>
-                    <Nav.Link className="btn border-top mt-4" href="/Logout">
-                      Logout
+                    <Nav.Link className="btn border-top mt-4">
+                    <Link
+                        to="/Logout"
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+                      Logout</Link>
                     </Nav.Link>
                   </Row>
                 </div>

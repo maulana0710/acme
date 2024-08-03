@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Card, Container, Button, Col, Row } from "react-bootstrap";
 import "./App.css";
 import "./style/fadeEffect.css";
@@ -59,10 +59,10 @@ function App() {
   }, []);
   const getItemProducts = async () => {
     await axios
-      .get("http://localhost:8080/product")
+      .get("https://api.acmeo2.online/product")
       .then(function (response) {
         // handle success
-        // console.log(response);
+        console.log(response.data);
         setItemProducts(response.data.data);
       })
       .catch((err) => console.log(err));
@@ -74,7 +74,7 @@ function App() {
   }, []);
   const getWishlistProduct = async () => {
     await axios
-      .get("http://localhost:8080/wishlist")
+      .get("https://api.acmeo2.online/wishlist")
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -89,7 +89,7 @@ function App() {
   }, []);
   const getCartProduct = async () => {
     await axios
-      .get("http://localhost:8080/cart")
+      .get("https://api.acmeo2.online/cart")
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -103,7 +103,7 @@ function App() {
   }, []);
   const getOrders = async () => {
     await axios
-      .get(`http://localhost:8080/order/filtered`)
+      .get(`https://api.acmeo2.online/order/filtered`)
       .then(function (response) {
         // handle success
         // console.log(response);
@@ -114,6 +114,7 @@ function App() {
   };
   return (
     <div className="App font-source-sans-pro" style={{ overflowX: "hidden" }}>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index item={itemProducts} wishlist={wishlistProduct} cart={cartProduct} />} />
         <Route path="/App" element={<App />} />
@@ -173,6 +174,7 @@ function App() {
         <Route path="/PurchaseDetail/:uuid" element={<PurchasingDetail orders={orders}/>} />
         {/* admin */}
       </Routes>
+    </BrowserRouter>
     </div>
   );
 }

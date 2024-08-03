@@ -18,7 +18,7 @@ function Purchasing({item, wishlist, cart}) {
   }, []);
   const getOrder = async () => {
     await axios
-      .get(`http://localhost:8080/order/user/${userLogin?.user_uuid}`)
+      .get(`https://api.acmeo2.online/order/user/${userLogin?.user_uuid}`)
       .then(function (response) {
         // handle success
         // console.log(response);

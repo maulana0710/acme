@@ -1,4 +1,5 @@
 import { Button, Carousel, Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Products({ item }) {
   const sortedData = item
@@ -118,12 +119,14 @@ function Products({ item }) {
                     </Col>
                   </Row>
                   <Row className="justify-content-center">
-                    <Button
-                      className="w-25 mb-2 mt-2"
-                      variant="success"
-                      href={`UpdateProduct/${value.product_uuid}`}
-                    >
-                      Perbarui Produk
+                    <Button className="w-25 mb-2 mt-2" variant="success">
+                      <Link
+                        to={`UpdateProduct/${value.product_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Perbarui Produk
+                      </Link>
                     </Button>
                   </Row>
                 </div>

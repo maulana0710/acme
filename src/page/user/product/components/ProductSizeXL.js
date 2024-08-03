@@ -45,7 +45,7 @@ function ProductSizeXL({ product = [], cart = [] }) {
     // console.log("produk ID :", product?.product_uuid);
     // console.log("jumlah :", amount);
     try {
-      axios.post("http://localhost:8080/cart/add", {
+      axios.post("https://api.acmeo2.online/cart/add", {
         userUUID: userLogin?.user_uuid,
         productUUID: product?.product_uuid,
         cartValue: amount,

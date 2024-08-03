@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import AddWishlist from "./AddWishlist";
 import ComingSoon from "./ComingSoon";
+import { Link } from "react-router-dom";
 
 function Pants({ unique = [], wishlist = [] }) {
   const userLogin = JSON.parse(sessionStorage.getItem("user"));
@@ -136,9 +137,15 @@ function Pants({ unique = [], wishlist = [] }) {
                             <Col>
                               <Button
                                 variant="secondary"
-                                href={`./DetailProduct/${value?.product_uuid}`}
                               >
+                                <Link
+                        to={`./DetailProduct/${value?.product_uuid}`}
+                        className="text-light"
+                        style={{ textDecoration: "none" }}
+                      >
+
                                 Detail Product
+                      </Link>
                               </Button>
                             </Col>
                             <Col>

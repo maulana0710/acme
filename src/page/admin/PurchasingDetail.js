@@ -10,14 +10,13 @@ import {
   Navbar,
   Row,
 } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../user/components/Footer";
 import AcmeO2 from "../../img/AcmeO2.svg";
 
 function PurchasingDetail({ orders = [] }) {
   const { uuid } = useParams();
   const [items, setItems] = useState();
-  //   console.log(items);
   useEffect(() => {
     getItem();
   }, [orders]);
@@ -47,96 +46,92 @@ function PurchasingDetail({ orders = [] }) {
   const toggleImage = () => {
     setShowImage(!showImage);
   };
-  
+
   let navigate = useNavigate();
-// BELOM KELAR
+  // BELOM KELAR
   const confirm = async () => {
     console.log("konfirmasi");
     try {
-        if (items?.order_status === 'verifikasi persediaan') {
+      if (items?.order_status === "verifikasi persediaan") {
         const formData = new FormData();
-        formData.append("status", 'diproses'
-        );
-        
+        formData.append("status", "diproses");
+
         const response = await axios.post(
-          `http://localhost:8080/order/edit/${uuid}`,
+          `https://api.acmeo2.online/edit/${uuid}`,
           formData
-          );
-          console.log(response.data.success);
-          try {
-            if (response.data.success === true) {
-              navigate("/AdminManager");
-            } else {
-              console.log("Gagal");
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        if (items?.order_status === 'diproses') {
-        const formData = new FormData();
-        formData.append("status", 'dikirim'
         );
-        
-        const response = await axios.post(
-          `http://localhost:8080/order/edit/${uuid}`,
-          formData
-          );
-          console.log(response.data.success);
-          try {
-            if (response.data.success === true) {
-              navigate("/AdminManager");
-            } else {
-              console.log("Gagal");
-            }
-          } catch (error) {
-            console.log(error);
+        console.log(response.data.success);
+        try {
+          if (response.data.success === true) {
+            navigate("/AdminManager");
+          } else {
+            console.log("Gagal");
           }
-        }
-        if (items?.order_status === 'dikirim') {
-        const formData = new FormData();
-        formData.append("status", 'tiba ditujuan'
-        );
-        
-        const response = await axios.post(
-          `http://localhost:8080/order/edit/${uuid}`,
-          formData
-          );
-          console.log(response.data.success);
-          try {
-            if (response.data.success === true) {
-              navigate("/AdminManager");
-            } else {
-              console.log("Gagal");
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        if (items?.order_status === 'tiba ditujuan') {
-        const formData = new FormData();
-        formData.append("status", 'selesai'
-        );
-        
-        const response = await axios.post(
-          `http://localhost:8080/order/edit/${uuid}`,
-          formData
-          );
-          console.log(response.data.success);
-          try {
-            if (response.data.success === true) {
-              navigate("/AdminManager");
-            } else {
-              console.log("Gagal");
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
         } catch (error) {
-          console.log("gagal memperbarui", error);
-          throw error;
+          console.log(error);
         }
+      }
+      if (items?.order_status === "diproses") {
+        const formData = new FormData();
+        formData.append("status", "dikirim");
+
+        const response = await axios.post(
+          `https://api.acmeo2.online/edit/${uuid}`,
+          formData
+        );
+        console.log(response.data.success);
+        try {
+          if (response.data.success === true) {
+            navigate("/AdminManager");
+          } else {
+            console.log("Gagal");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (items?.order_status === "dikirim") {
+        const formData = new FormData();
+        formData.append("status", "tiba ditujuan");
+
+        const response = await axios.post(
+          `https://api.acmeo2.online/edit/${uuid}`,
+          formData
+        );
+        console.log(response.data.success);
+        try {
+          if (response.data.success === true) {
+            navigate("/AdminManager");
+          } else {
+            console.log("Gagal");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (items?.order_status === "tiba ditujuan") {
+        const formData = new FormData();
+        formData.append("status", "selesai");
+
+        const response = await axios.post(
+          `https://api.acmeo2.online/edit/${uuid}`,
+          formData
+        );
+        console.log(response.data.success);
+        try {
+          if (response.data.success === true) {
+            navigate("/AdminManager");
+          } else {
+            console.log("Gagal");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.log("gagal memperbarui", error);
+      throw error;
+    }
   };
   const reject = async () => {
     console.log("ditolak");
@@ -145,7 +140,7 @@ function PurchasingDetail({ orders = [] }) {
       formData.append("status", "ditolak");
 
       const response = await axios.post(
-        `http://localhost:8080/order/edit/${uuid}`,
+        `https://api.acmeo2.online/edit/${uuid}`,
         formData
       );
       console.log(response.data.success);
@@ -187,14 +182,24 @@ function PurchasingDetail({ orders = [] }) {
       <div className={showImage ? "opacity-50" : ""}>
         <Navbar bg="light" variant="light" expand="lg" className="fs-5">
           <Container>
-            <Navbar.Brand
-              className="fw-bolder"
-              style={{ width: "10%" }}
-              href="/"
-            >
-              <img src={AcmeO2} alt="AcmeO2" />
+            <Navbar.Brand className="fw-bolder" style={{ width: "10%" }}>
+              <Link
+                to={`/`}
+                className="text-light"
+                style={{ textDecoration: "none" }}
+              >
+                <img src={AcmeO2} alt="AcmeO2" />
+              </Link>
             </Navbar.Brand>
-            <Nav.Link href="/AdminManager">Admin Manager</Nav.Link>
+            <Nav.Link>
+              <Link
+                to={`/AdminManager`}
+                className="text-light"
+                style={{ textDecoration: "none" }}
+              >
+                Admin Manager
+              </Link>
+            </Nav.Link>
           </Container>
         </Navbar>
         <Container fluid className="bg-dark pb-4">
@@ -279,10 +284,12 @@ function PurchasingDetail({ orders = [] }) {
                         <Col className="border-end p-2 border-dark">
                           Pembeli : {items?.user_username}
                         </Col>
-                        <Col className="p-2">Waktu Pembelian: {formattedDate}</Col>
+                        <Col className="p-2">
+                          Waktu Pembelian: {formattedDate}
+                        </Col>
                       </Row>
                       <Row>
-                      {items?.order_status === "ditolak" ? (
+                        {items?.order_status === "ditolak" ? (
                           <Col className="bg-danger p-2 text-light">
                             Status Pembelian : {items?.order_status}
                           </Col>
@@ -323,28 +330,31 @@ function PurchasingDetail({ orders = [] }) {
                       {items?.product_description}
                     </Col>
                   </Row>
-                  {items?.order_status === 'selesai' || items?.order_status === 'ditolak' ? <></> :
-                  <Row className="justify-content-around">
-                    <Col sm='auto'>
-                      <Button
-                        className="w-100 mb-2 mt-2 fw-bold"
-                        variant="danger"
-                        onClick={() => reject()}
-                      >
-                        TOLAK
-                      </Button>
-                    </Col>
-                    <Col sm='auto'>
-                      <Button
-                        className="w-100 mb-2 mt-2 fw-bold"
-                        variant="primary"
-                        onClick={() => confirm()}
+                  {items?.order_status === "selesai" ||
+                  items?.order_status === "ditolak" ? (
+                    <></>
+                  ) : (
+                    <Row className="justify-content-around">
+                      <Col sm="auto">
+                        <Button
+                          className="w-100 mb-2 mt-2 fw-bold"
+                          variant="danger"
+                          onClick={() => reject()}
                         >
-                        KONFIRMASI
-                      </Button>
-                    </Col>
-                  </Row>
-                      }
+                          TOLAK
+                        </Button>
+                      </Col>
+                      <Col sm="auto">
+                        <Button
+                          className="w-100 mb-2 mt-2 fw-bold"
+                          variant="primary"
+                          onClick={() => confirm()}
+                        >
+                          KONFIRMASI
+                        </Button>
+                      </Col>
+                    </Row>
+                  )}
                 </div>
               </Container>
             </Col>
